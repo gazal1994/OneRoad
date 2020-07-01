@@ -1,6 +1,6 @@
 [
     {
-      "_id": "1",
+      "id": 1,
       "location": "Tel Aviv",
       "destination": "Ashkelon",
       "departureTime": "2020-07-23T21:00:00.000Z",
@@ -9,7 +9,7 @@
       "distance":40
     },
     {
-        "_id": "1",
+        "id": 2,
         "location": "Rehovot",
         "destination": "Yavna",
         "departureTime": "2018-12-08T22:00:00.000Z",
@@ -18,7 +18,7 @@
         "distance":20
     },
     {
-        "_id": "1",
+        "id": 3,
         "location": "Ashdod",
         "destination": "Herzelia",
         "departureTime": "2020-08-03T21:00:00.000Z",
@@ -27,7 +27,7 @@
         "distance":40
     },
     {
-        "_id": "1",
+        "id": 4,
         "location": "Haifa",
         "destination": "Eilat",
         "departureTime": "2020-07-28T22:00:00.000Z",
@@ -36,7 +36,7 @@
         "distance":300
     },
     {
-        "_id": "1",
+        "id":5,
         "location": "Eilat",
         "destination": "Tel AVIV",
         "departureTime": "2020-07-03T21:00:00.000Z",
