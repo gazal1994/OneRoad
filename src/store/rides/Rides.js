@@ -5,7 +5,7 @@ import rides from './rides.json'
 const axios = require('axios')
 export class Rides {
        @observable rides=[]
-
+       @observable handelInput
     
 
        @action getRides = async ()=>{
@@ -15,6 +15,7 @@ export class Rides {
             this.rides=ridesArry
         }
          @action addRide = async(id,location,destination,departureTime,driver,status,distance)=>{
+           
              let newRide = {id,location,destination,departureTime,driver,status,distance}
        /*    const newRideData = await axios.post('http://localhost:3200/addRide', newRide); */
         /*   newRide=newRideData.data[0] */
@@ -58,4 +59,7 @@ export class Rides {
            const ride=this.rides.find(r=>r.id===/* resiveRideInfo.data[0] */putRideId.rideId)
            ride.status=true
          } 
+         @action pushTohandelInput = (inputData)=>{
+           this.handelInput={inputData}
+         }
 }
