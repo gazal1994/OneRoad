@@ -31,7 +31,8 @@ const App = inject(
         <Router>
           <Route exact path="/Landing" component={Landing} />
           <Route exact path="/MyRides" component={MyRides} />
-          <Route exact path="/operation" component={Operation} />
+          <Route path="/operation/:type" exact render={({ match }) => <Operation match={match}  />}></Route>
+       {/*    <Route path="/operation/:type/" exact render={({ match }) => <Operation match={match}  />}></Route> */}
         </Router>
       </React.Fragment>
     );
