@@ -1,35 +1,27 @@
 //import React from 'react';
-import React, { Component } from 'react';
-import './App.css';
-import {observer, inject} from 'mobx-react'
-import Clients from './Components/Clients'
-import Analytice from './Components/Analytice'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Navbar from './Components/Navbar'
-@inject('storeList')
-@observer
-
-class App extends Component {
-constructor(){
-  super()
-}
-componentDidMount=async()=>{
-
-}
-  
-  render(){
-  
+import React from "react";
+import "./App.css";
+import { observer, inject } from "mobx-react";
+import { BrowserRouter as Router, Route} from "react-router-dom";
+import Landing from "./Components/Landing/Landing";
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+const App = inject(
+  "users",
+  "rides"
+)(
+  observer((props) => {
     return (
-      <div >
-           <Router>
+      <React.Fragment>
+        <CssBaseline />
         
-            </Router>
-            
-    
-      </div>
+        <Router>
+          <Route exact path="/Landing" component={Landing} />
+          {/*  <Landing /> */}
+        </Router>
+      </React.Fragment>
     );
-  }
-
-}
+  })
+);
 
 export default App;
