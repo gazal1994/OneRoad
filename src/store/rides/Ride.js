@@ -11,7 +11,7 @@ export class Ride {
       @observable distance
        
 
-      constructor (id,location,destination,departureTime,driver,status,distance){
+      constructor (id,location,destination,departureTime,driver,status=false,distance=null){
          this.id=id
          this.location=location
          this.destination=destination
@@ -20,8 +20,6 @@ export class Ride {
          this.status=status
          this.distance=distance
       }
-
-      @computed get distance(){
-            return  this.distance
-       }
+      
+     
 }

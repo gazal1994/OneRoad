@@ -5,13 +5,14 @@ export class User {
        @observable phone 
        @observable income
        @observable expense
-       @observable rides =[]
+      /*  @observable rides =[] */
 
-      constructor (id,name,phone,income,expense){
+      constructor (id,name,phone,income=0,expense=0){
          this.id=id
          this.name=name
          this.phone=phone
          this.income=income
          this.expense=expense
       }
+
 }
