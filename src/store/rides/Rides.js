@@ -1,32 +1,61 @@
 import { observable, action, computed } from 'mobx'
 import {Ride} from './Ride'
+import rides from './rides.json'
+
+const axios = require('axios')
 export class Rides {
        @observable rides=[]
 
     
 
        @action getRides = async ()=>{
-            let json = await axios.get('http://localhost:3200/getRides');
-             json.data[0].forEach(m=>this.rides.push(new Ride(m.id,m.location,m.destination,m.departureTime,m.driver,m.status,m.distance)))        
+            const rideData = rides /* await axios.get('http://localhost:3200/getRides'); */
+            const ridesArry=[]
+            rideData/* .data[0] */.forEach(r=>ridesArry.push(new Ride(r.id,r.location,r.destination,r.departureTime,r.driver,r.status,r.distance)))        
+            this.rides=ridesArry
         }
-        @action addRide = async(id,location,destination,departureTime,driver,status,distance)=>{
-            let temp = {id,location,destination,departureTime,driver,status,distance}
-            await axios.post('http://localhost:3200/addRide', temp);
+         @action addRide = async(id,location,destination,departureTime,driver,status,distance)=>{
+             let newRide = {id,location,destination,departureTime,driver,status,distance}
+       /*    const newRideData = await axios.post('http://localhost:3200/addRide', newRide); */
+        /*   newRide=newRideData.data[0] */
+          this.rides.
+          push(new Ride(/* newRide */newRide.id,/* newRide */newRide.location,/* newRide */newRide.destination,
+          /* newRide */newRide.departureTime,/* newRide */newRide.driver,/* newRide */newRide.status,/* newRide */newRide.distance))
           }
+          
         @action removeRide = async (id)=>{
-            let temp = {id:id}
-           await axios.DELETE('http://localhost:3200/Ride', temp);
+           const rideIdObject = {id:id}
+         /*   const resiveRideId= await axios.DELETE('http://localhost:3200/Ride', rideIdObject); */
+          /*  const rideId=resiveRideId.data[0].id */
+           const index=  this.rides.findIndex(r=>r.id===/* rideId */rideIdObject.id)
+           this.rides.splice(index,1)
+        }
+        
+         
+         @action approveRide = async (rideId,passengerId,users)=>{
+            const putRideInfo = {rideId,passengerId}
+            /* const resiveRideInfo=await axios.put('http://localhost:3200/approveRide', putRideInfo); */
+            /* const rideInfo=resiveRideInfo.data[0] */
+            const ride=this.rides.find(r=>r.id===/* rideInfo */putRideInfo.rideId)
+            const passenger =users.find(u=>u.id===/* resiveRideInfo.data[0] */passengerId)
+            const indexPassengerPending=ride.pendingPassengers.findIndex(r=>r.id===/* rideInfo */putRideInfo.passengerId)
+            ride.pendingPassengers.splice(indexPassengerPending,1)
+            ride.approvedPassengers.push(passenger)
+              }
+          
+       
+         @action requestRide = async (rideId,passengerId,users)=>{
+           const putRideInfo = {rideId,passengerId}
+          /*  const resiveRideInfo=await axios.put('http://localhost:3200/requestRide', putRideInfo); */
+           const ride =this.rides.find(r=>r.id===/* resiveRideInfo.data[0] */putRideInfo.rideId)
+           const passenger =users.find(u=>u.id===/* resiveRideInfo.data[0] */passengerId)
+           ride.pendingPassengers.push(/* resiveRideInfo.data[0].passenger */passenger)
          }
-         @action approveRide = async (rideId,passengerId)=>{
-            let temp = {rideId,passengerId}
-           await axios.put('http://localhost:3200/approveRide', temp);
-         }
-         @action requestRide = async (rideId,passenger)=>{
-            let temp = {rideId,passenger}
-           await axios.put('http://localhost:3200/requestRide', temp);
-         }
+            
          @action finishRide = async (rideId)=>{
-            let temp = {rideId}
-           await axios.put('http://localhost:3200/requestRide', temp);
-         }
+           const putRideId = {rideId}
+          /*  const resiveRideInfo= await axios.put('http://localhost:3200/requestRide', putRideId); */
+           const ride=this.rides.find(r=>r.id===/* resiveRideInfo.data[0] */putRideId.rideId)
+           ride.status=true
+         } 
 }
