@@ -14,7 +14,7 @@
         "destination": "Yavna",
         "departureTime": "2018-12-08T22:00:00.000Z",
         "driver":"Fischer Hammond",
-        "status": true,
+        "status": false,
         "distance":20
     },
     {
