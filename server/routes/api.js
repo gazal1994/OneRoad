@@ -45,38 +45,41 @@ router.delete('/user/:id', function (req, res) {
         })
 })
 
-router.get('/rides', function (req, res) {
-    sequelize
-        .query("SELECT * FROM ride")
-        .then(results => {
-            res.send(results[0])
-        })
+router.get('/rides', async function (req, res) {
+    const [rides] = await sequelize.query("SELECT * FROM ride")
+
+    for (let ride of rides) {
+        const [res] = await sequelize.query(`SELECT user_id FROM users_rides WHERE ride_id=${ride.id} AND type="driver"`)
+        if (res[0]) {
+            const driverId = res[0].user_id
+            const [driver] = (await sequelize.query(`SELECT * FROM user WHERE id=${driverId}`))[0]
+            ride.driver = driver
+        }
+    }
+    res.send(rides)
 })
-router.post('/ride', function (req, res) {
+
+router.post('/ride', async function (req, res) {//add new ride
     const ride = req.body
-    sequelize
-        .query(`INSERT INTO ride VALUES(null, '${ride.location}', '${ride.destination}', ${ride.departureTime}, ${ride.distance}, ${ride.isDone})`)
-        .then(function (result) {
-            res.send(result)
-        })
-})
-router.post('/ride/:passengerId?', async function (req, res) {
-    const ride = req.body
-    const passengerId = req.params.passengerId
     const result = await sequelize
         .query(`INSERT INTO ride VALUES(null, '${ride.location}', '${ride.destination}', ${ride.departureTime}, ${ride.distance}, ${ride.isDone})`)
     const rideId = result[0]
-    if (!passengerId) {
-        const driver = await sequelize
-            .query(`INSERT INTO users_rides VALUES(${ride.driver.id},${rideId},"driver",null)`)
-    }
-    else {
-        const passenger = await sequelize
-            .query(`INSERT INTO users_rides VALUES(${passengerId},${rideId},"passenger","pending")`)
-    }
+
+    const driver = await sequelize
+        .query(`INSERT INTO users_rides VALUES(${ride.driver.id},${rideId},"driver",null)`)
+
     res.send(result)
 })
-router.put('/ride/:passengerId?/:rideId?', async function (req, res) {
+router.post('/ride/:passengerId/:rideId', async function (req, res) {//request ride
+    const passengerId = req.params.passengerId
+    const rideId = req.params.rideId
+
+    const passenger = await sequelize
+        .query(`INSERT INTO users_rides VALUES(${passengerId},${rideId},"passenger","pending")`)
+
+    res.send(passenger)
+})
+router.put('/ride/:passengerId/:rideId', async function (req, res) {//approve ride
     const rideId = req.params.rideId
     const passengerId = req.params.passengerId
     const query = `UPDATE users_rides
@@ -84,6 +87,23 @@ router.put('/ride/:passengerId?/:rideId?', async function (req, res) {
                 WHERE user_id=${passengerId} AND ride_id = ${rideId};`
     const passenger = await sequelize.query(query)
     res.send(passenger)
+})
+router.put('/ride/:rideId', async function (req, res) {//approve ride
+    const rideId = req.params.rideId
+    const query = `UPDATE ride
+                SET is_done = 1
+                WHERE id = ${rideId};`
+    const result = await sequelize.query(query)
+    res.send(result)
+})
+router.delete('/ride/:id', async function (req, res) {
+    const id = req.params.id
+    await sequelize
+        .query(`DELETE FROM users_rides WHERE ride_id=${id}`)
+    const result = await sequelize
+        .query(`DELETE FROM ride WHERE id=${id}`)
+
+    res.send(result)
 })
 
 module.exports = router
