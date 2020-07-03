@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +21,7 @@ const NavBar=inject('users','rides')(observer((props)=> {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-        
+       
         <AppBar position="static">
           <Toolbar variant="dense">
             <Typography className={classes.head} align='right' variant="h6" color="inherit">
@@ -35,6 +35,7 @@ const NavBar=inject('users','rides')(observer((props)=> {
             </Typography>
           </Toolbar>
         </AppBar>
+        
       </div>
     );
 }))

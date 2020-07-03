@@ -1,10 +1,17 @@
 
 import React from "react";
+import { inject,observer} from "mobx-react";
 
-const AvailableRide = (props) => {
+
+const AvailableRide =inject('users','rides')(observer((props) => {
+    const textInput=props.textInput
+    const setTextInput=props.setTextInput
+    const passengerId=textInput.passengerId
     const ride = props.ride
+    console.log(ride.id)
     const handleClick = () => {
-        //handle joining ride
+       props.rides.requestRide(passengerId,ride.id,props.users.users)
+       setTextInput({...textInput,location: '', destination: '', departureTime: '',passengerId:''})
     }
     return (
         <div>
@@ -14,4 +21,5 @@ const AvailableRide = (props) => {
         </div>
     )
 }
+))
 export default AvailableRide;
