@@ -50,4 +50,5 @@ export class Rides {
     ride.isDone = true
   }
  
+ 
 }

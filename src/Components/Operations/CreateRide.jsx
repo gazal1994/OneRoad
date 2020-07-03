@@ -36,9 +36,8 @@ const CreateRide = inject(
     props.rides.addRide(textInput.location ,textInput.destination,textInput.departureTime,textInput.DriverId,0,0)
     setTextInput({ ...textInput,location: '', destination: '', departureTime: '',DriverId:''});
       }
-    const time= Date.now()
  /*  console.log(textInput) */
-console.log(time)
+console.log(textInput)
     return (
       <form className={classes.container} noValidate>
         
