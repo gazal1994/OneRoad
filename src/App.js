@@ -36,18 +36,18 @@ const App = inject(
     useEffect(() => {
       (async () => {
         await props.rides.getRides()
-         await props.users.getUsers() 
+        await props.users.getUsers()
       })()
     }, [])
-   console.log(props.rides.rides)
+    console.log(props.rides.rides)
     return (
       <React.Fragment>
         <CssBaseline />
         <Router>
           <Route exact path="/Landing" component={Landing} />
           <Route exact path="/MyRides" component={MyRides} />
-          <Route exact path="/operation/passenger"  component={PassengerSearch} />
-          <Route exact path="/operation/CreateRide"  component={CreateRide} />
+          <Route exact path="/operation/passenger" component={PassengerSearch} />
+          <Route exact path="/operation/CreateRide" component={CreateRide} />
           {/*    <Route path="/operation/:type/" exact render={({ match }) => <Operation match={match}  />}></Route> */}
         </Router>
       </React.Fragment>
