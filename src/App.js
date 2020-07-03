@@ -8,7 +8,8 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MyRides from "./Components/MyRides/MyRides";
 import CommonButton from './Components/Common/CommonButton'
-import Operation from './Components/Operations/Operation'
+import PassengerSearch from './Components/Operations/PassengerSearch'
+import CreateRide from './Components/Operations/CreateRide'
 const App = inject(
   "users",
   "rides"
@@ -35,17 +36,18 @@ const App = inject(
     useEffect(() => {
       (async () => {
         await props.rides.getRides()
-        //await props.rides.finishRide(4)
+         await props.users.getUsers() 
       })()
     }, [])
-
+   console.log(props.rides.rides)
     return (
       <React.Fragment>
         <CssBaseline />
         <Router>
           <Route exact path="/Landing" component={Landing} />
           <Route exact path="/MyRides" component={MyRides} />
-          <Route path="/operation/:type" exact render={({ match }) => <Operation match={match} />}></Route>
+          <Route exact path="/operation/passenger"  component={PassengerSearch} />
+          <Route exact path="/operation/CreateRide"  component={CreateRide} />
           {/*    <Route path="/operation/:type/" exact render={({ match }) => <Operation match={match}  />}></Route> */}
         </Router>
       </React.Fragment>

@@ -4,8 +4,8 @@
       "location": "Tel Aviv",
       "destination": "Ashkelon",
       "departureTime": "2020-07-23T21:00:00.000Z",
-      "driver":"Perkins Cunningham",
-      "status": false,
+      "driver":{"id":1},
+      "is_done": false,
       "distance":40
     },
     {
@@ -13,8 +13,8 @@
         "location": "Rehovot",
         "destination": "Yavna",
         "departureTime": "2018-12-08T22:00:00.000Z",
-        "driver":"Fischer Hammond",
-        "status": false,
+        "driver":{"id":2},
+        "is_done": false,
         "distance":20
     },
     {
@@ -22,8 +22,8 @@
         "location": "Ashdod",
         "destination": "Herzelia",
         "departureTime": "2020-08-03T21:00:00.000Z",
-        "driver":"Gonzalez Armstrong",
-        "status": false,
+        "driver":{"id":3},
+        "is_done": false,
         "distance":40
     },
     {
@@ -31,8 +31,8 @@
         "location": "Haifa",
         "destination": "Eilat",
         "departureTime": "2020-07-28T22:00:00.000Z",
-        "driver":"Melva Ingram",
-        "status": false,
+        "driver":{"id":4},
+        "is_done": false,
         "distance":300
     },
     {
@@ -40,8 +40,8 @@
         "location": "Eilat",
         "destination": "Tel AVIV",
         "departureTime": "2020-07-03T21:00:00.000Z",
-        "driver":"Melva Ingram",
-        "status": false,
+        "driver":{"id":5},
+        "is_done": false,
         "distance":200
     }
 ]

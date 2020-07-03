@@ -1,9 +1,8 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 import NavBar from "./NavBar";
-import CommonButton from "../Common/CommonButton";
 import { Link } from "react-router-dom";
-import { Container } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 const Landing = inject(
   "users",
   "rides"
@@ -16,13 +15,13 @@ const Landing = inject(
           style={{ textDecoration: "none", color: "white" }}
           to="/operation/passenger"
         >
-          <CommonButton name={"Catch A Ride"} />
+        <Button  variant="contained" color="primary">Catch A Ride</Button>  
         </Link>
         <Link
           style={{ textDecoration: "none", color: "white" }}
-          to="/operation/driver"
+          to="/operation/CreateRide"
         >
-          <CommonButton name={"Create Carpool"} />
+          <Button  variant="contained" color="primary">Create Carpool</Button>  
         </Link>
       </React.Fragment>
     );
