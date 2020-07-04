@@ -5,13 +5,14 @@ export class Ride {
       @observable destination
       @observable departureTime
       @observable driver
-      @observable approvedPassengers = []
-      @observable pendingPassengers = []
+      @observable approvedPassengers
+      @observable pendingPassengers
       @observable distance
       @observable isDone
 
 
-      constructor(id, location, destination, departureTime, driver, distance = null, isDone = false) {
+      constructor(id, location, destination, departureTime, driver, distance = null, isDone = false,
+            pendingPassengers = [], approvedPassengers = []) {
             this.id = id
             this.location = location
             this.destination = destination
@@ -19,6 +20,8 @@ export class Ride {
             this.driver = driver
             this.isDone = isDone
             this.distance = distance
+            this.pendingPassengers = pendingPassengers
+            this.approvedPassengers = approvedPassengers
       }
 
 

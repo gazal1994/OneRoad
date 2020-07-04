@@ -26,19 +26,21 @@ const CreateRide = inject(
 )(
   observer((props) => {
     const classes = useStyles();
+    const toSqlDate = (date) => (new Date(date)).toISOString().slice(0, 19).replace('T', ' ')
 
     const [textInput, setTextInput] = useState({ location: '', destination: '', departureTime: "2020-07-08T10:30", DriverId: '' });
     const handleChange = (e) => {
       const name = e.target.name;
+      console.log(toSqlDate(textInput.departureTime));
+
       setTextInput({ ...textInput, [name]: e.target.value });
     }
     const handelClick = () => {
+
       props.rides.addRide(textInput.location, textInput.destination, textInput.departureTime, textInput.DriverId, 100, 0, props.users.users)
       setTextInput({ ...textInput, location: '', destination: '', departureTime: '', DriverId: '' });
     }
-    const time = Date.now()
-    /*  console.log(textInput) */
-    console.log(time)
+ 
     return (
       <form className={classes.container} noValidate>
 
