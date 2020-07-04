@@ -52,5 +52,6 @@ export class Rides {
     const ride = this.rides.find(r => r.id === rideId)
     ride.isDone = true
   }
-
+ 
+ 
 }

@@ -28,7 +28,7 @@ const NavBar=inject('users','rides')(observer((props)=> {
              <Link  style={{ textDecoration: "none", color: "white" }} to='/Landing'> HOME</Link>
             </Typography>
             <Typography className={classes.head} align='right' variant="h6" color="inherit">
-              ANALYTICS
+              <Link style={{ textDecoration: "none", color: "white" }}to='/Analytics'>ANALYTICS</Link>
             </Typography>
             <Typography className={classes.head} align='right' variant="h6" color="inherit">
             <Link  style={{ textDecoration: "none", color: "white" }} to='/MyRides'>MY RIDES</Link>

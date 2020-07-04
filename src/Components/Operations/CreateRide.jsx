@@ -36,8 +36,7 @@ const CreateRide = inject(
       setTextInput({ ...textInput, [name]: e.target.value });
     }
     const handelClick = () => {
-
-      props.rides.addRide(textInput.location, textInput.destination, textInput.departureTime, textInput.DriverId, 100, 0, props.users.users)
+      props.rides.addRide(textInput.location, textInput.destination, toSqlDate(textInput.departureTime), textInput.DriverId, 150, 0, props.users.users)
       setTextInput({ ...textInput, location: '', destination: '', departureTime: '', DriverId: '' });
     }
  

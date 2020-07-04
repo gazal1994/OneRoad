@@ -38,7 +38,7 @@ const PassengerSearch = inject(
           r.destination == textInput.destination //&&
           // r.departureTime == textInput.departureTime
         )
-      
+        
         setRelevantRides([...relevant])
       }
     
