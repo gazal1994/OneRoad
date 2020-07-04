@@ -17,10 +17,8 @@ export class Rides {
   @action addRide = async (location, destination, departureTime, driverId, distance, isDone, users) => {
     const driver = users.find(u => u.id == driverId)
     let newRide = { location, destination, departureTime, driver, isDone, distance }
-    debugger
     const newRideId = await axios.post('http://localhost:3200/ride', newRide)
     newRide.id = newRideId.data[0]
-    debugger
     this.rides.push(new Ride(newRide))
   }
 
