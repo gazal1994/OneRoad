@@ -47,8 +47,6 @@ const PassengerSearch = inject(
       setRelevantRides([...relevant])
     }
 
-    console.log(textInput)
-
     return (
       <div>
 
