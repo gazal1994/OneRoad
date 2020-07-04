@@ -1,6 +1,5 @@
 import { observable, action, computed } from 'mobx'
 import { User } from './User'
-import users from './users.json'
 const axios = require('axios')
 
 export class Users {
