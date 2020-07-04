@@ -27,22 +27,22 @@ const CreateRide = inject(
   observer((props) => {
     const classes = useStyles();
 
-    const [textInput, setTextInput] = useState({ location: '', destination: '', departureTime: "2020-07-08T10:30",DriverId: ''});
+    const [textInput, setTextInput] = useState({ location: '', destination: '', departureTime: "2020-07-08T10:30", DriverId: '' });
     const handleChange = (e) => {
       const name = e.target.name;
       setTextInput({ ...textInput, [name]: e.target.value });
     }
     const handelClick = () => {
-    props.rides.addRide(textInput.location ,textInput.destination,textInput.departureTime,textInput.DriverId,0,0)
-    setTextInput({ ...textInput,location: '', destination: '', departureTime: '',DriverId:''});
-      }
-    const time= Date.now()
- /*  console.log(textInput) */
-console.log(time)
+      props.rides.addRide(textInput.location, textInput.destination, textInput.departureTime, textInput.DriverId, 100, 0, props.users.users)
+      setTextInput({ ...textInput, location: '', destination: '', departureTime: '', DriverId: '' });
+    }
+    const time = Date.now()
+    /*  console.log(textInput) */
+    console.log(time)
     return (
       <form className={classes.container} noValidate>
-        
-          <TextField
+
+        <TextField
           id="outlined-textarea"
           label=" location"
           placeholder="Placeholder"
@@ -52,7 +52,7 @@ console.log(time)
           name="location"
           onChange={handleChange}
         />
-          <TextField
+        <TextField
           id="outlined-textarea"
           label="destination"
           placeholder="Placeholder"
@@ -92,23 +92,23 @@ console.log(time)
           name="DriverId"
           onChange={handleChange}
         />
-         <TextField
-        id="datetime-local"
-        label="departureTime"
-        type="datetime-local"
-        name="departureTime"
-        /*  value={textInput.departureTime} */
-        defaultValue={textInput.departureTime}
-        onChange={handleChange}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
+        <TextField
+          id="datetime-local"
+          label="departureTime"
+          type="datetime-local"
+          name="departureTime"
+          /*  value={textInput.departureTime} */
+          defaultValue={textInput.departureTime}
+          onChange={handleChange}
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
         <Button onClick={handelClick} variant="contained" color="primary">Create Ride</Button>
-       
 
-        </form>
+
+      </form>
     );
   })
 );

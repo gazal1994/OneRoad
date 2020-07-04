@@ -49,11 +49,28 @@ router.get('/rides', async function (req, res) {
     const [rides] = await sequelize.query("SELECT * FROM ride")
 
     for (let ride of rides) {
-        const [res] = await sequelize.query(`SELECT user_id FROM users_rides WHERE ride_id=${ride.id} AND type="driver"`)
+        //get driver
+        let [res] = await sequelize.query(`SELECT user_id FROM users_rides WHERE ride_id=${ride.id} AND type="driver"`)
         if (res[0]) {
             const driverId = res[0].user_id
             const [driver] = (await sequelize.query(`SELECT * FROM user WHERE id=${driverId}`))[0]
             ride.driver = driver
+        }
+        //get pending passengers
+        ride.pendingPassengers = []
+        let [res2] = await sequelize.query(`SELECT user_id FROM users_rides WHERE ride_id=${ride.id} AND type="passenger" AND status="pending"`)
+        for (let p of res2) {
+            let passengerId = p.user_id
+            let [passenger] = (await sequelize.query(`SELECT * FROM user WHERE id=${passengerId}`))[0]
+            ride.pendingPassengers.push(passenger)
+        }
+        //get approved passengers
+        ride.approvedPassengers = []
+        let [res3] = await sequelize.query(`SELECT user_id FROM users_rides WHERE ride_id=${ride.id} AND status="approved"`)
+        for (let p of res3) {
+            let passengerId = p.user_id
+            let [passenger] = (await sequelize.query(`SELECT * FROM user WHERE id=${passengerId}`))[0]
+            ride.approvedPassengers.push(passenger)
         }
     }
     res.send(rides)
@@ -62,7 +79,7 @@ router.get('/rides', async function (req, res) {
 router.post('/ride', async function (req, res) {//add new ride
     const ride = req.body
     const result = await sequelize
-        .query(`INSERT INTO ride VALUES(null, '${ride.location}', '${ride.destination}', ${ride.departureTime}, ${ride.distance}, ${ride.isDone})`)
+        .query(`INSERT INTO ride VALUES(null, '${ride.location}', '${ride.destination}', '${ride.departureTime}', ${ride.distance}, ${ride.isDone})`)
     const rideId = result[0]
 
     const driver = await sequelize
@@ -88,7 +105,7 @@ router.put('/ride/:passengerId/:rideId', async function (req, res) {//approve ri
     const passenger = await sequelize.query(query)
     res.send(passenger)
 })
-router.put('/ride/:rideId', async function (req, res) {//approve ride
+router.put('/ride/:rideId', async function (req, res) {//finish ride
     const rideId = req.params.rideId
     const query = `UPDATE ride
                 SET is_done = 1
@@ -104,6 +121,45 @@ router.delete('/ride/:id', async function (req, res) {
         .query(`DELETE FROM ride WHERE id=${id}`)
 
     res.send(result)
+})
+router.get('/analytics/:id/:from/:to', async function (req, res) {
+    const id = req.params.id
+    const from = req.params.from
+    const to = req.params.to
+    const driverQuery = `SELECT COUNT(user_id)
+                        FROM users_rides
+                        INNER JOIN ride ON users_rides.ride_id=ride.id
+                        WHERE users_rides.user_id=${id} AND type="driver" AND
+                        ride.departure_time>="${from}" AND ride.departure_time<="${to}";`
+    const passengerQuery = `SELECT COUNT(user_id)
+                            FROM users_rides
+                            INNER JOIN ride ON users_rides.ride_id=ride.id
+                            WHERE users_rides.user_id=${id} AND type="passenger" AND 
+                            ride.departure_time>="${from}" AND ride.departure_time<="${to}";`
+    const incomeQuery = `SELECT SUM(distance)
+                        FROM users_rides
+                        INNER JOIN ride ON users_rides.ride_id=ride.id
+                        WHERE users_rides.user_id=${id} AND users_rides.type="driver" AND
+                        ride.departure_time>="${from}" AND ride.departure_time<="${to}";`
+    const expenseQuery = `SELECT SUM(distance)
+                        FROM users_rides
+                        INNER JOIN ride ON users_rides.ride_id=ride.id
+                        WHERE users_rides.user_id=${id} AND users_rides.type="passenger" AND users_rides.status="approved"
+                        AND ride.departure_time>="${from}" AND ride.departure_time<="${to}";`
+    const [carpools] = (await sequelize.query(driverQuery))[0]
+    const [ridesJoined] = (await sequelize.query(passengerQuery))[0]
+    const [income] = (await sequelize.query(incomeQuery))[0]
+    const [expense] = (await sequelize.query(expenseQuery))[0]
+    const carpoolsCount = carpools["COUNT(user_id)"]
+    const ridesJoinedCount = ridesJoined["COUNT(user_id)"]
+    const incomeSum = income['SUM(distance)']
+    const expenseSum = expense['SUM(distance)']
+    res.send({
+        carpools: carpoolsCount,
+        ridesJoined: ridesJoinedCount,
+        income: incomeSum,
+        expense: expenseSum
+    })
 })
 
 module.exports = router
