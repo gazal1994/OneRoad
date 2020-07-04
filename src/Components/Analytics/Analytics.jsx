@@ -22,14 +22,17 @@ const Analytics = inject(
 )(
   observer((props) => {
     const classes = useStyles();
+    const toSqlDate = (date) => (new Date(date)).toISOString()
     const [chosenDate, setChosenDate] = useState({userId:'', from: "2020-07-08",to:"2020-07-08"});
     const [analytics,setAnalytics]=useState([])
     const handleChange = (e) => {
     const name = e.target.name;
     setChosenDate({ ...chosenDate, [name]: e.target.value });
+  
     }
+    console.log(toSqlDate(chosenDate.from))
     const handelClick = async() => {
-    const analytics =  await props.users.analyticsSearch(chosenDate.userId,chosenDate.from,chosenDate.to)
+    const analytics =  await props.users.analyticsSearch(chosenDate.userId,toSqlDate(chosenDate.from),toSqlDate(chosenDate.to))
     setAnalytics([...analytics])
       }
     
@@ -76,7 +79,7 @@ const Analytics = inject(
       />
        
         <Button onClick={handelClick} variant="contained" color="primary">Search</Button>
-        {analytics.map(a=><AnalyticsResults moneyEarnd={a.moneyEarnd} moneySpent={a.moneySpent} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
+        {analytics.map(a=><AnalyticsResults income={a.income} expense={a.expense} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
 
       </div>
     );

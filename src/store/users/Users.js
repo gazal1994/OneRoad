@@ -1,6 +1,5 @@
 import { observable, action, computed } from 'mobx'
-import {User} from './User'
-import users from './users.json'
+import { User } from './User'
 const axios = require('axios')
 export class Users {
        @observable users=[]
@@ -27,4 +26,7 @@ export class Users {
          }
         }
 
-        export default Users
+ 
+
+
+export default Users

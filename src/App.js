@@ -35,10 +35,10 @@ const App = inject(
     useEffect(() => {
       (async () => {
         await props.rides.getRides()
-         await props.users.getUsers() 
+        await props.users.getUsers()
       })()
     }, [])
-   console.log(props.rides.rides)
+    console.log(props.rides.rides)
     return (
       <React.Fragment>
         <CssBaseline />

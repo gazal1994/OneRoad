@@ -9,15 +9,18 @@ export class Rides {
   @action getRides = async () => {
     const rideData = await axios.get('http://localhost:3200/rides');
     const ridesArray = []
-    rideData.data.forEach(r => ridesArray.push(new Ride(r.id, r.location, r.destination, r.departureTime, r.driver, r.is_done, r.distance)))
+    rideData.data.forEach(r => ridesArray.push(new Ride(r.id, r.location, r.destination, r.departureTime, r.driver, r.is_done, r.distance,
+      r.pendingPassengers, r.approvedPassengers)))
     this.rides = ridesArray
     console.log(this.rides);
   }
-  @action addRide = async (location, destination, departureTime, driverId, distance, isDone) => {
-    const driver =this.rides.find(r=>r.driver.id==driverId)
+  @action addRide = async (location, destination, departureTime, driverId, distance, isDone, users) => {
+    const driver = users.find(u => u.id == driverId)
     let newRide = { location, destination, departureTime, driver, isDone, distance }
-    const newRideId = (await axios.post('http://localhost:3200/ride', newRide))
+    debugger
+    const newRideId = await axios.post('http://localhost:3200/ride', newRide)
     newRide.id = newRideId.data[0]
+    debugger
     this.rides.push(new Ride(newRide))
   }
 
@@ -29,7 +32,7 @@ export class Rides {
   }
 
   @action requestRide = async (passengerId, rideId, users) => {
-    const responsePassengerId =await axios.post(`http://localhost:3200/ride/${passengerId}/${rideId}`);
+    const responsePassengerId = await axios.post(`http://localhost:3200/ride/${passengerId}/${rideId}`);
     const ride = this.rides.find(r => r.id === rideId)
     const passenger = users.find(u => u.id === responsePassengerId)
     ride.pendingPassengers.push(passenger)
