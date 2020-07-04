@@ -1,9 +1,10 @@
 import { observable, action, computed } from 'mobx'
 import { User } from './User'
 const axios = require('axios')
+
 export class Users {
        @observable users=[]
-      
+       @observable loggedInUser
        @action getUsers = async ()=>{
             const useraData =  await axios.get('http://localhost:3200/users');
             
@@ -21,8 +22,10 @@ export class Users {
          } */
 
        @action analyticsSearch=async(userId,startDate,endDate)=>{
+       let backAnalytics=[]
        const analytics=await axios.get(`http://localhost:3200/analytics/${userId}/${startDate}/${endDate}`)
-       return analytics.data[0]
+       backAnalytics.push(analytics.data)
+       return backAnalytics
          }
         }
 

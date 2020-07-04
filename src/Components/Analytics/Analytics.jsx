@@ -22,8 +22,8 @@ const Analytics = inject(
 )(
   observer((props) => {
     const classes = useStyles();
-    const toSqlDate = (date) => (new Date(date)).toISOString()
-    const [chosenDate, setChosenDate] = useState({userId:'', from: "2020-07-08",to:"2020-07-08"});
+    const toSqlDate = (date) => (new Date(date)).toISOString().slice(0, 19).replace('T', ' ')
+    const [chosenDate, setChosenDate] = useState({userId:'', from: "2020-07-08T10:30",to:"2020-07-08T10:30"});
     const [analytics,setAnalytics]=useState([])
     const handleChange = (e) => {
     const name = e.target.name;
@@ -32,8 +32,8 @@ const Analytics = inject(
     }
     console.log(toSqlDate(chosenDate.from))
     const handelClick = async() => {
-    const analytics =  await props.users.analyticsSearch(chosenDate.userId,toSqlDate(chosenDate.from),toSqlDate(chosenDate.to))
-    setAnalytics([...analytics])
+    const backAnalytics =  await props.users.analyticsSearch(chosenDate.userId,toSqlDate(chosenDate.from),toSqlDate(chosenDate.to))
+    setAnalytics([...backAnalytics])
       }
     
   console.log(chosenDate)
@@ -53,9 +53,8 @@ const Analytics = inject(
        <TextField
         id="datetime-local"
         label="From"
-        type="date"
+        type="datetime-local"
         name="from"
-        /*  value={textInput.departureTime} */
         defaultValue={chosenDate.from}
         onChange={handleChange}
         className={classes.textField}
@@ -67,9 +66,8 @@ const Analytics = inject(
          <TextField
         id="datetime-local"
         label="To"
-        type="date"
+        type="datetime-local"
         name="to"
-        /*  value={textInput.departureTime} */
         defaultValue={chosenDate.to}
         onChange={handleChange}
         className={classes.textField}
@@ -79,7 +77,7 @@ const Analytics = inject(
       />
        
         <Button onClick={handelClick} variant="contained" color="primary">Search</Button>
-        {analytics.map(a=><AnalyticsResults income={a.income} expense={a.expense} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
+        {analytics.map(a=><AnalyticsResults key={chosenDate.userId} income={a.income} expense={a.expense} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
 
       </div>
     );

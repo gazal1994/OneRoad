@@ -3,8 +3,8 @@ import { inject,observer} from "mobx-react";
 
 
 const AnalyticsResults =inject('users','rides')(observer((props) => {
-    const moneyEarnd=props.moneyEarnd
-    const moneySpend=props.moneySpent
+    const income=props.income
+    const expense=props.expense
     const ridesJoined=props.ridesJoined
     const carpools = props.carpools
    
@@ -13,8 +13,8 @@ const AnalyticsResults =inject('users','rides')(observer((props) => {
     }
     return (
         <div>
-            <p>moneyEarnd:{moneyEarnd}</p>
-            <p>moneySpend:{moneySpend}</p>
+            <p>moneyEarnd:{income?income:0}</p>
+            <p>moneySpend:{expense?expense:0}</p>
             <p>ridesJoined:{ridesJoined}</p>
             <p>accomplished carpools:{carpools}</p>
 

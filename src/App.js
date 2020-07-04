@@ -38,6 +38,7 @@ const App = inject(
         await props.users.getUsers()
       })()
     }, [])
+    console.log(props.users.users)
     console.log(props.rides.rides)
     return (
       <React.Fragment>
