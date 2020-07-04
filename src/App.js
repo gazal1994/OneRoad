@@ -14,28 +14,13 @@ const App = inject(
   "rides"
 )(
   observer((props) => {
-    //  props.users.getUsers() store testing
-    //  console.log(props.users.users)
-    //  props.users.removeUser(3)
-    //  console.log(props.users.users)
-    //  props.rides.getRides()
-    //  console.log(props.rides.rides)
-    //  props.rides.removeRide(3)
-    //  props.rides.requestRide(2,2,props.users.users)
-    //  props.rides.approveRide(2,2,props.users.users)
-    //  props.rides.finishRide(2)
 
-    /* props.rides.addRide("ashkelon", "Tel Aviv", null, {
-      id: 1,
-      name: "david",
-      phone: "123",
-      income: 0,
-      expense: 0
-    }, 45, false) */
     useEffect(() => {
       (async () => {
         await props.rides.getRides()
         await props.users.getUsers()
+        const id = prompt('your id please')
+        props.users.loggedInUser = props.users.users.find(u => u.id == id)
       })()
     }, [])
     console.log(props.users.users)
