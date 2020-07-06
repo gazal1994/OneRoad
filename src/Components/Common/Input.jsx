@@ -11,7 +11,7 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
-
+import { observer, inject } from "mobx-react";
 function loadScript(src, position, id) {
   if (!position) {
     return;
@@ -32,15 +32,19 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
 }));
-
- function GoogleMaps(){
+const GoogleMaps = inject(
+  "users",
+  "rides"
+)(
+  observer((props) => {
+ 
   
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState( '');
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
-
+  
  /*  const coordinate = async()=>{
   const results = await getGeocode({ inputValue });
   const { lat, lng } = await getLatLng(results[0]);
@@ -60,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
     loaded.current = true;
   }
-console.log(value)
+
   const fetch = React.useMemo(
     () =>
       throttle((request, callback) => {
@@ -99,7 +103,7 @@ console.log(value)
         setOptions(newOptions);
       }
     });
-
+    
     return () => {
       active = false;
     };
@@ -115,6 +119,7 @@ console.log(value)
       autoComplete
       includeInputInList
       filterSelectedOptions
+     /*  onChange={()=>props.handleChange("location",inputValue)} */
       value={value}
       onChange={(event, newValue) => {
         
@@ -122,10 +127,11 @@ console.log(value)
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
+        setInputValue(newInputValue)
+        props.handleChange(props.name,newInputValue);
       }}
       renderInput={(params) => (
-        <TextField name={params.inputProps.value} {...params} label="Add a location" variant="outlined" fullWidth />
+        <TextField /* name={params.inputProps.value} */ {...params} label={props.name} variant="outlined" fullWidth />
       )}
       renderOption={(option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;
@@ -155,6 +161,6 @@ console.log(value)
       }}
     />
   );
-}
+}))
 
 export default GoogleMaps;

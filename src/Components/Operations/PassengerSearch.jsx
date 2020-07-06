@@ -22,8 +22,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
+import GoogleMaps from '../Common/Input'
 
-
+const trimString=(str)=>{
+  return str.split(",")[0]
+}
 
 const use = makeStyles((theme) => ({
   margin: {
@@ -108,20 +111,23 @@ const PassengerSearch = inject(
       destination: "",
       departureTime: "2020-07-08T10:30",
     });
-    const handleChange = (e) => {
-      const name = e.target.name;
-      setTextInput({ ...textInput, [name]: e.target.value });
+    const handleChange = (autoCompName,autoCompValue) => {
+     
+      const name =autoCompName
+      const value =autoCompValue
+      setTextInput({ ...textInput, [name]: value });
+      
     };
     const handelClick = () => {
       const relevant = props.rides.rides.filter(
         (r) =>
-          r.location == textInput.location &&
-          r.destination == textInput.destination //&&
+          r.location == trimString(textInput.location) &&
+          r.destination == trimString(textInput.destination) //&&
         // r.departureTime == textInput.departureTime
       );
       setRelevantRides([...relevant]);
     };
-
+    console.log(textInput)
     return (
       <div className={classes.root}>
         <Grid
@@ -132,7 +138,7 @@ const PassengerSearch = inject(
           spacing={2}
         >
           <Grid item xs={12}>
-            <TextField
+           {/*  <TextField
               id="outlined-textarea"
               label=" Location"
               placeholder="Placeholder"
@@ -141,10 +147,11 @@ const PassengerSearch = inject(
               value={textInput.location}
               name="location"
               onChange={handleChange}
-            />
+            /> */}
+             <GoogleMaps  name={"location"}  handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            {/* <TextField
               id="outlined-textarea"
               label="Destination"
               placeholder="Placeholder"
@@ -153,7 +160,8 @@ const PassengerSearch = inject(
               value={textInput.destination}
               name="destination"
               onChange={handleChange}
-            />
+            /> */}
+             <GoogleMaps  name={"destination"}  handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -162,7 +170,7 @@ const PassengerSearch = inject(
               type="datetime-local"
               name="departureTime"
               defaultValue={textInput.departureTime}
-              onChange={handleChange}
+              onChange={(e)=>handleChange("departureTime",e.target.value)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,

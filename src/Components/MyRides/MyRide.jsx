@@ -18,3 +18,4 @@ const MyRide = inject(
   })
 );
 export default MyRide;
+
