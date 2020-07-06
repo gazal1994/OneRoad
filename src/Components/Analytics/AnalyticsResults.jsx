@@ -8,9 +8,7 @@ const AnalyticsResults =inject('users','rides')(observer((props) => {
     const ridesJoined=props.ridesJoined
     const carpools = props.carpools
    
-    const handleClick = () => {
-       
-    }
+  
     return (
         <div>
             <p>moneyEarnd:{income?income:0}</p>

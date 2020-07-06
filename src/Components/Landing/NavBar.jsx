@@ -9,11 +9,19 @@ import { makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      
     },
      head:{
         padding: theme.spacing(2),
         cursor:'pointer'
         
+     },
+     toolbar:{
+         backgroundColor:' #2d545e',
+         padding:0,
+     },
+     appbar:{
+       opacity:1
      }
   }));
 
@@ -22,8 +30,8 @@ const NavBar=inject('users','rides')(observer((props)=> {
     return (
         <div className={classes.root}>
        
-        <AppBar position="static">
-          <Toolbar variant="dense">
+        <AppBar position="static" className={classes.appbar}>
+          <Toolbar variant="dense" className={classes.toolbar} >
             <Typography className={classes.head} align='right' variant="h6" color="inherit">
              <Link  style={{ textDecoration: "none", color: "white" }} to='/Landing'> HOME</Link>
             </Typography>
