@@ -10,6 +10,7 @@ import MyRides from "./Components/MyRides/MyRides";
 import PassengerSearch from './Components/Operations/PassengerSearch'
 import CreateRide from './Components/Operations/CreateRide'
 import ListOfRequestedRides from './Components/MyRides/ListOfRequestedRides'
+import Map from './Components/MyRides/Map'
 const App = inject(
   "users",
   "rides"
@@ -30,7 +31,7 @@ const App = inject(
         }
         props.users.loggedInUser = props.users.users.find(u => u.id == id)
         console.log(props.users.loggedInUser);
-       
+
       })()
     }, [])
     console.log(props.users.users)
@@ -45,6 +46,8 @@ const App = inject(
           <Route exact path="/operation/CreateRide" component={CreateRide} />
           <Route exact path='/Analytics' component={Analytics} />
           <Route exact path='/ListOfRequestedRides' component={ListOfRequestedRides} />
+          {/*  //<Route exact path='/map/:rideId' component={Map} /> */}
+          <Route exact path='/map/:rideId' render={({ match }) => <Map match={match} />} />
         </Router>
       </React.Fragment>
     );

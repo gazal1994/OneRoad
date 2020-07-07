@@ -16,11 +16,13 @@ const MyRides = inject('users', 'rides')(observer((props) => {
     <div>
       <h4>Requests to join my carpool</h4>
       <Link style={{ textDecoration: "none", color: "white" }} to='/ListOfRequestedRides'>My Requests</Link>
-
+      {/*  /${r.id} */}
       {myRides.map(r => {
         return (
-          <div style={{ border: '2px solid blue' }}>
-            <p>{r.location.name} => {r.destination.name}</p>
+          <div key={r.id} style={{ border: '2px solid blue' }}>
+            <Link to={`/map/${r.id}`}>
+              <p>{r.location.name} => {r.destination.name}</p>
+            </Link>
             <p>pending passengers:</p>
             <PendingPassengerList key={r.id + 'p'} ride={r} />
             <p>approved passengers:</p>

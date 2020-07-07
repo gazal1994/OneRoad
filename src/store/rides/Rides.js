@@ -9,7 +9,7 @@ export class Rides {
   @action getRides = async () => {
     const rideData = await axios.get('http://localhost:3200/rides');
     const ridesArray = []
-    rideData.data.forEach(r => ridesArray.push(new Ride(r.id, r.location, r.destination, r.departureTime, r.driver, r.is_done, r.distance,
+    rideData.data.forEach(r => ridesArray.push(new Ride(r.id, r.location, r.destination, r.departureTime, r.driver, r.distance, r.is_done,
       r.pendingPassengers, r.approvedPassengers)))
     this.rides = ridesArray
     console.log(this.rides);
@@ -20,7 +20,7 @@ export class Rides {
     const newRideId = await axios.post('http://localhost:3200/ride', newRide)
     newRide.id = newRideId.data[0]
     this.rides.push(new Ride(newRide))
-    if(newRide.id){
+    if (newRide.id) {
       return true
     }
   }
@@ -37,7 +37,7 @@ export class Rides {
     const ride = this.rides.find(r => r.id === rideId)
     const passenger = users.find(u => u.id === responsePassengerId)
     ride.pendingPassengers.push(passenger)
-    if(responsePassengerId){
+    if (responsePassengerId) {
       return true
     }
   }
@@ -56,6 +56,6 @@ export class Rides {
     const ride = this.rides.find(r => r.id === rideId)
     ride.isDone = true
   }
- 
- 
+
+
 }
