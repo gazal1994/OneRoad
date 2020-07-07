@@ -11,8 +11,12 @@ import {
   geocodeByPlaceId,
   getLatLng,
 } from 'react-places-autocomplete';
-
-
+import getDistance from 'geolib/es/getDistance';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import Slide from '@material-ui/core/Slide';
+const dateFormat = require('dateformat')
+const now = new Date();
 const use = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
@@ -52,6 +56,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: 200,
   },
+  snak: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  
+  },
 }));
 
 const CreateRide = inject(
@@ -61,13 +72,20 @@ const CreateRide = inject(
   observer((props) => {
     const classes = useStyles();
     const classe = use();
-    const toSqlDate = (date) =>
-      new Date(date).toISOString().slice(0, 19).replace("T", " ");
+    const toSqlDate = (date) =>{
+    const newDtae=new Date(date).toISOString().slice(0, 19).replace("T", " ");
+    return newDtae
+    }
 
+    function SlideTransition(props) {
+      return <Slide {...props} direction="right" />;
+    }
+    const timeNow = dateFormat(now, "yyyy-mm-dd'T'HH:MM")
+    const [open, setOpen] = React.useState({error:false,success:false});
     const [textInput, setTextInput] = useState({
       location: "",
       destination: "",
-      departureTime: "2020-07-08T10:30",
+      departureTime: `${timeNow}`,
     });
     const handleChange = (autoCompName,autoCompValue) => {
      
@@ -79,41 +97,60 @@ const CreateRide = inject(
     const trimString=(str)=>{
         return str.split(",")[0]
       }
+
+
+      console.log(textInput)
     const handelClick = async () => {
+       
+        if(textInput.location.length===0){
+          setOpen({...open,error:true,success:false,note:"From where you start to ride"})
+        }
+        if(textInput.destination.length===0){
+          setOpen({...open,error:true,success:false,note:"Where you want to go"})
+        }
+        else {
         const x=  await coordinate(textInput.location)
         const y=  await coordinate(textInput.destination)
-        console.log(x,y)
-        props.rides.addRide(
-          trimString(textInput.location),
-          trimString(textInput.destination),
+        const dist= (getDistance(x,y,1)/1000)
+        const location = {name: trimString(textInput.location),longitude:x.lng,latitude:x.lat}
+        const destination ={name:trimString(textInput.destination),longitude:y.lng,latitude:y.lat}
+        console.log(location)
+        console.log(destination)
+        const answer =await props.rides.addRide(
+        location,
+        destination,
         toSqlDate(textInput.departureTime),
         props.users.loggedInUser.id,
-        100,
+        dist,
         0,
-        props.users.users
-      );
-      
-      /* setTextInput({
-        ...textInput,
-        location: "",
-        destination: "",
-        departureTime: "",
-        DriverId: "",
-      }); */
-    };
+        props.users.users)
 
+        if(answer){
+          setOpen({...open,error:false,success:true,note:`The ride created successfully,from ${trimString(textInput.location)} to ${trimString(textInput.destination)}`})
+        
+        }
+        }
+
+      } 
+      
+      
+    
     const coordinate = async(value)=>{
     const results = await geocodeByAddress(value)
     const latLng = await getLatLng (results[0])
     return latLng
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-   
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      setOpen({...open,error:false,success:false,error:''});
+    }
   
     return (
       <div className={classes.root}>
-        {/* <GoogleMaps textInput={textInput}  handleChange={handleChange} /> */}
+        
 
         <Grid
           container
@@ -124,28 +161,10 @@ const CreateRide = inject(
         >
           <Grid item xs={12}>
           <GoogleMaps  name={"location"}  handleChange={handleChange} />
-           {/*  <TextField
-              id="outlined-textarea"
-              label=" Location"
-              placeholder="Placeholder"
-              multiline
-              variant="outlined"
-              value={textInput.location}
-              name="location"
-              
-            /> */}
+          
           </Grid>
           <Grid item xs={12}>
-           {/*  <TextField
-              id="outlined-textarea"
-              label="Destination"
-              placeholder="Placeholder"
-              multiline
-              variant="outlined"
-              value={textInput.destination}
-              name="destination"
-              onChange={handleChange}
-            /> */}
+          
             <GoogleMaps  name={"destination"}  handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
@@ -173,6 +192,18 @@ const CreateRide = inject(
             </Button>
           </Grid>
         </Grid>
+        <div className={classes.snak}>
+         <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical:'top', horizontal:'left' }} open={open.error} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+        {open.note}
+        </Alert>
+      </Snackbar>
+      <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical:'top', horizontal:'left' }} open={open.success} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+        {open.note}
+        </Alert>
+      </Snackbar>
+      </div>
       </div>
     );
   })

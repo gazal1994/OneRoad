@@ -6,6 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import AnalyticsResults from './AnalyticsResults'
 import Grid from '@material-ui/core/Grid';
 import '../../App.css'
+const dateFormat = require('dateformat')
+const now = new Date();
+
 const use = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
@@ -53,12 +56,14 @@ const Analytics = inject(
   "rides"
 )(
   observer((props) => {
+    const timeNow = dateFormat(now, "yyyy-mm-dd'T'HH:MM")
+    const monthAgo= dateFormat(now.setMonth(now.getMonth() - 1),"yyyy-mm-dd'T'HH:MM")
+    
     const classes = useStyles();
     const classe = use()
     const toSqlDate = (date) => (new Date(date)).toISOString().slice(0, 19).replace('T', ' ')
-    const [chosenDate, setChosenDate] = useState({ from: "2020-07-08T10:30", to: "2020-07-08T10:30" });
-    const [analytics, setAnalytics] = useState([])
-
+    const [chosenDate, setChosenDate] = useState({ from: `${monthAgo}`,to:`${timeNow}`});
+    const [analytics,setAnalytics]=useState([])
     const handleChange = (e) => {
       const name = e.target.name;
       setChosenDate({ ...chosenDate, [name]: e.target.value });
@@ -68,6 +73,8 @@ const Analytics = inject(
       const backAnalytics = await props.users.analyticsSearch(props.users.loggedInUser.id, toSqlDate(chosenDate.from), toSqlDate(chosenDate.to))
       setAnalytics([...backAnalytics])
     }
+    
+ 
 
     return (
       <div className={classes.root}>
