@@ -31,8 +31,8 @@ const App = inject(
         <Router>
           <Route exact path="/Landing" component={Landing} />
           <Route exact path="/MyRides" component={MyRides} />
-          <Route exact path="/operation/passenger"  component={PassengerSearch} />
-          <Route exact path="/operation/CreateRide"  component={CreateRide} />
+          <Route exact path="/operation/passenger" component={PassengerSearch} />
+          <Route exact path="/operation/CreateRide" component={CreateRide} />
           <Route exact path='/Analytics' component={Analytics} />
         </Router>
       </React.Fragment>

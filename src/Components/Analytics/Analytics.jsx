@@ -23,33 +23,21 @@ const Analytics = inject(
   observer((props) => {
     const classes = useStyles();
     const toSqlDate = (date) => (new Date(date)).toISOString().slice(0, 19).replace('T', ' ')
-    const [chosenDate, setChosenDate] = useState({ userId: '', from: "2020-07-08T10:30", to: "2020-07-08T10:30" });
+    const [chosenDate, setChosenDate] = useState({ from: "2020-01-01T10:30", to: "2020-12-31T10:30" });
     const [analytics, setAnalytics] = useState([])
+
     const handleChange = (e) => {
       const name = e.target.name;
       setChosenDate({ ...chosenDate, [name]: e.target.value });
 
     }
-    console.log(toSqlDate(chosenDate.from))
     const handelClick = async () => {
-      const backAnalytics = await props.users.analyticsSearch(chosenDate.userId, toSqlDate(chosenDate.from), toSqlDate(chosenDate.to))
+      const backAnalytics = await props.users.analyticsSearch(props.users.loggedInUser.id, toSqlDate(chosenDate.from), toSqlDate(chosenDate.to))
       setAnalytics([...backAnalytics])
     }
 
-    console.log(chosenDate)
-
     return (
       <div>
-        <TextField
-          id="outlined-textarea"
-          label="Userid"
-          placeholder="Placeholder"
-          multiline
-          variant="outlined"
-          value={chosenDate.userId}
-          name="userId"
-          onChange={handleChange}
-        />
         <TextField
           id="datetime-local"
           label="From"
