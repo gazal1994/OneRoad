@@ -30,7 +30,7 @@ const App = inject(
         }
         props.users.loggedInUser = props.users.users.find(u => u.id == id)
         console.log(props.users.loggedInUser);
-
+       
       })()
     }, [])
     console.log(props.users.users)
