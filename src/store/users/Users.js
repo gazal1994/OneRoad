@@ -12,7 +12,7 @@ export class Users {
        backAnalytics.push(analytics.data)
        return backAnalytics
          }
-        }
+        
 
   @action getUsers = async () => {
     const useraData = await axios.get('http://localhost:3200/users');

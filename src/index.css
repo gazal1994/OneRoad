@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +9,23 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+    font-family: 'Montserrat', sans-serif;
+    background-image: url("./bird-s-eye-view-photography-of-road-in-the-middle-of-desert-1201673.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 800px;
+    
+ 
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+*{
+  font-family: 'Montserrat', sans-serif;
+  
+  
 }

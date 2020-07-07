@@ -1,0 +1,9 @@
+.link:focus:hover:visited:link:active{
+    text-decoration: none;
+}
+
+*{
+    font-family: 'Montserrat', sans-serif;
+    
+    
+  }
