@@ -44,11 +44,22 @@ router.delete('/user/:id', function (req, res) {
             res.send(result)
         })
 })
+router.get('/locations', async function (req, res) {
+    const [locations] = await sequelize.query("SELECT * FROM ride")
+    res.send(locations)
+})
 
 router.get('/rides', async function (req, res) {
     const [rides] = await sequelize.query("SELECT * FROM ride")
 
     for (let ride of rides) {
+        //get location and destination
+        const [location] = await sequelize
+            .query(`SELECT id, name, longitude, latitude FROM location WHERE id=${ride.location}`)
+        const [destination] = await sequelize
+            .query(`SELECT id, name, longitude, latitude FROM location WHERE id=${ride.destination}`)
+        ride.location = location[0]
+        ride.destination = destination[0]
         //get driver
         let [res] = await sequelize.query(`SELECT user_id FROM users_rides WHERE ride_id=${ride.id} AND type="driver"`)
         if (res[0]) {
@@ -78,8 +89,12 @@ router.get('/rides', async function (req, res) {
 
 router.post('/ride', async function (req, res) {//add new ride
     const ride = req.body
+    const [locationId] = await sequelize
+        .query(`INSERT INTO location VALUES(null, '${ride.location.name}', '${ride.location.longitude}', '${ride.location.latitude}')`)
+    const [destinationId] = await sequelize
+        .query(`INSERT INTO location VALUES(null, '${ride.destination.name}', '${ride.destination.longitude}', '${ride.destination.latitude}')`)
     const result = await sequelize
-        .query(`INSERT INTO ride VALUES(null, '${ride.location}', '${ride.destination}', '${ride.departureTime}', ${ride.distance}, ${ride.isDone})`)
+        .query(`INSERT INTO ride VALUES(null, ${locationId}, ${destinationId}, '${ride.departureTime}', ${ride.distance}, ${ride.isDone})`)
     const rideId = result[0]
 
     const driver = await sequelize

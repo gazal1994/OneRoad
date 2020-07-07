@@ -134,15 +134,7 @@ const CreateRide = inject(
       } 
       
       
-      /* setTextInput({
-        ...textInput,
-        location: "",
-        destination: "",
-        departureTime: "",
-        DriverId: "",
-      }); */
-    ;
-
+    
     const coordinate = async(value)=>{
     const results = await geocodeByAddress(value)
     const latLng = await getLatLng (results[0])
@@ -158,7 +150,7 @@ const CreateRide = inject(
   
     return (
       <div className={classes.root}>
-        {/* <GoogleMaps textInput={textInput}  handleChange={handleChange} /> */}
+        
 
         <Grid
           container
@@ -169,28 +161,10 @@ const CreateRide = inject(
         >
           <Grid item xs={12}>
           <GoogleMaps  name={"location"}  handleChange={handleChange} />
-           {/*  <TextField
-              id="outlined-textarea"
-              label=" Location"
-              placeholder="Placeholder"
-              multiline
-              variant="outlined"
-              value={textInput.location}
-              name="location"
-              
-            /> */}
+          
           </Grid>
           <Grid item xs={12}>
-           {/*  <TextField
-              id="outlined-textarea"
-              label="Destination"
-              placeholder="Placeholder"
-              multiline
-              variant="outlined"
-              value={textInput.destination}
-              name="destination"
-              onChange={handleChange}
-            /> */}
+          
             <GoogleMaps  name={"destination"}  handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>

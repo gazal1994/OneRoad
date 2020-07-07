@@ -13,13 +13,13 @@ const use = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
-  button:{
-    backgroundColor:'#c89666',
-    color:'white',
+  button: {
+    backgroundColor: '#c89666',
+    color: 'white',
     border: '1px solid',
     borderColor: '#c89666',
     textTransform: 'none',
-    width:200,
+    width: 200,
     '&:hover': {
       backgroundColor: '#c89666',
       borderColor: '#c89666',
@@ -33,7 +33,7 @@ const use = makeStyles((theme) => ({
       boxShadow: '#c89666',
       borderColor: '#c89666',
     },
-  
+
   }
 }));
 
@@ -41,15 +41,15 @@ const use = makeStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop:theme.spacing(16)
+    marginTop: theme.spacing(16)
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 200,
   },
-  
-  
+
+
 }));
 const Analytics = inject(
   "users",
@@ -60,61 +60,60 @@ const Analytics = inject(
     const monthAgo= dateFormat(now.setMonth(now.getMonth() - 1),"yyyy-mm-dd'T'HH:MM")
     
     const classes = useStyles();
-    const classe= use()
+    const classe = use()
     const toSqlDate = (date) => (new Date(date)).toISOString().slice(0, 19).replace('T', ' ')
     const [chosenDate, setChosenDate] = useState({ from: `${monthAgo}`,to:`${timeNow}`});
     const [analytics,setAnalytics]=useState([])
     const handleChange = (e) => {
-    const name = e.target.name;
-    setChosenDate({ ...chosenDate, [name]: e.target.value });
-  
+      const name = e.target.name;
+      setChosenDate({ ...chosenDate, [name]: e.target.value });
+
     }
-    console.log(chosenDate)
-    const handelClick = async() => {
-    const backAnalytics =  await props.users.analyticsSearch(props.users.loggedInUser.id,toSqlDate(chosenDate.from),toSqlDate(chosenDate.to))
-    setAnalytics([...backAnalytics])
-      }
+    const handelClick = async () => {
+      const backAnalytics = await props.users.analyticsSearch(props.users.loggedInUser.id, toSqlDate(chosenDate.from), toSqlDate(chosenDate.to))
+      setAnalytics([...backAnalytics])
+    }
     
-  console.log(chosenDate)
+ 
 
     return (
       <div className={classes.root}>
-      <Grid container 
-            direction="column"
-            justify="center"
-            alignItems="center" spacing={3}>
-      <Grid item xs={12}>
-       <TextField
-        id="datetime-local"
-        label="From"
-        type="datetime-local"
-        name="from"
-        defaultValue={chosenDate.from}
-        onChange={handleChange}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-       </Grid>
-   <Grid item xs={12}>
-         <TextField
-        id="datetime-local"
-        label="To"
-        type="datetime-local"
-        name="to"
-        defaultValue={chosenDate.to}
-        onChange={handleChange}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      </Grid>
-       <Grid item xs={12}>
-        <Button className={classe.button} onClick={handelClick} variant="contained" color="primary">Search</Button>
-       </Grid>
-        {analytics.map(a=><AnalyticsResults key={chosenDate.userId} income={a.income} expense={a.expense} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
+        <Grid container
+          direction="column"
+          justify="center"
+          alignItems="center" spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              id="datetime-local"
+              label="From"
+              type="datetime-local"
+              name="from"
+              defaultValue={chosenDate.from}
+              onChange={handleChange}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="datetime-local"
+              label="To"
+              type="datetime-local"
+              name="to"
+              defaultValue={chosenDate.to}
+              onChange={handleChange}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button className={classe.button} onClick={handelClick} variant="contained" color="primary">Search</Button>
+          </Grid>
+          {analytics.map(a => <AnalyticsResults key={chosenDate.userId} income={a.income} expense={a.expense} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
         </Grid>
       </div>
     );

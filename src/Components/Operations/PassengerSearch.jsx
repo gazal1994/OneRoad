@@ -169,29 +169,11 @@ const PassengerSearch = inject(
           spacing={2}
         >
           <Grid item xs={12}>
-           {/*  <TextField
-              id="outlined-textarea"
-              label=" Location"
-              placeholder="Placeholder"
-              multiline
-              variant="outlined"
-              value={textInput.location}
-              name="location"
-              onChange={handleChange}
-            /> */}
+          
              <GoogleMaps  name={"location"}  handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
-            {/* <TextField
-              id="outlined-textarea"
-              label="Destination"
-              placeholder="Placeholder"
-              multiline
-              variant="outlined"
-              value={textInput.destination}
-              name="destination"
-              onChange={handleChange}
-            /> */}
+           
              <GoogleMaps  name={"destination"}  handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
@@ -220,9 +202,7 @@ const PassengerSearch = inject(
             </Grid>
           <Grid  item xs={12} className={classes.demo}>
           <List  dense={dense}>
-       {/*  <Typography variant="h6" align="center" className={classes.title}>
-        Avatar with text and icon
-      </Typography> */}
+      
         {relevantRides.map((r) => (
           <AvailableRide
             key={r.id}
@@ -238,25 +218,6 @@ const PassengerSearch = inject(
         </List>
            </Grid>
         </Grid>
-
-     
-     
-      
-   {/*    <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center"
-      spacing={0}
-    >
-<Grid  item xs={12} md={6}>
-     
-      <div className={classes.demo}>
-     
-       
-          </div>
-        </Grid>
-        </Grid> */}
         <div className={classes.snak}>
          <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical:'top', horizontal:'left' }} open={open.error} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">

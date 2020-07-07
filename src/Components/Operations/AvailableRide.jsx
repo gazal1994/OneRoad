@@ -23,13 +23,18 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 const dateFormat = require('dateformat')
 const now = new Date();
 const use = makeStyles((theme) => ({
-    margin: {
-      margin: theme.spacing(1),
-    },
-    button: {
+  margin: {
+    margin: theme.spacing(1),
+  },
+  button: {
+    backgroundColor: "#c89666",
+    color: "white",
+    border: "1px solid",
+    borderColor: "#c89666",
+    textTransform: "none",
+    width: 50,
+    "&:hover": {
       backgroundColor: "#c89666",
-      color: "white",
-      border: "1px solid",
       borderColor: "#c89666",
       textTransform: "none",
       borderRadius:'100px',
@@ -49,39 +54,49 @@ const use = makeStyles((theme) => ({
         borderColor: "#c89666",
       },
     },
-  }));
-  
+    "&:active": {
+      boxShadow: "#c89666",
+      backgroundColor: "#c89666",
+      borderColor: "#c89666",
+    },
+    "&:focus": {
+      boxShadow: "#c89666",
+      borderColor: "#c89666",
+    },
+  },
+}));
+
 const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-      marginTop: theme.spacing(16),
-    },
-    list: {
-      flexGrow: 1,
-      maxWidth: 752,
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200,
-    },
-    divider: {
-      color: "red",
-    },
-    demo: {
-      backgroundColor: theme.palette.background.paper,
-      width:500
+  root: {
+    flexGrow: 1,
+    marginTop: theme.spacing(16),
+  },
+  list: {
+    flexGrow: 1,
+    maxWidth: 752,
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
+  divider: {
+    color: "red",
+  },
+  demo: {
+    backgroundColor: theme.palette.background.paper,
+    width: 500
   },
   title: {
     margin: theme.spacing(4, 0, 2),
   },
-  list:{
-    backgroundColor:'#12343b',
+  list: {
+    backgroundColor: '#12343b',
     margin: theme.spacing(1),
-    
+
     borderColor: "#12343b",
-    borderRadius:'5px',
-    color:'white'
+    borderRadius: '5px',
+    color: 'white'
   },
   secondary:{
     color:'#c89666'
@@ -125,11 +140,7 @@ const AvailableRide = inject('users', 'rides')(observer((props) => {
              
               
                 <ListItem className={classes.list}>
-                 {/*  <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar> */}
+               
                   <ListItemText
                     classes={{secondary:classes.secondary}}
                     primary={ride.location.name}
@@ -146,14 +157,12 @@ const AvailableRide = inject('users', 'rides')(observer((props) => {
                   </ListItemSecondaryAction>
                 </ListItem>
          
-            {/* <span>From{ride.location}</span>
-            <span>To{ride.destination}</span>
-            <span><button onClick={handleClick}>join</button></span> */}
             
-            </React.Fragment>
+
+    </React.Fragment>
 
 
-    )
+  )
 }
 ))
 export default AvailableRide;
