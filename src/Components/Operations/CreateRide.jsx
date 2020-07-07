@@ -5,24 +5,13 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import "../../App.css";
-/* import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete"; */
-/* import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox"; */
-import GoogleMaps from "../Common/Input";
-import PlacesAutocomplete from "react-places-autocomplete";
+import GoogleMaps from '../Common/Input'
 import {
   geocodeByAddress,
   geocodeByPlaceId,
   getLatLng,
-} from "react-places-autocomplete";
+} from 'react-places-autocomplete';
+
 
 const use = makeStyles((theme) => ({
   margin: {
@@ -52,6 +41,7 @@ const use = makeStyles((theme) => ({
   },
 }));
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -79,77 +69,51 @@ const CreateRide = inject(
       destination: "",
       departureTime: "2020-07-08T10:30",
     });
-    const handleChange = (e) => {
-      const name = e.target.name;
-      console.log(toSqlDate(textInput.departureTime));
-
-      setTextInput({ ...textInput, [name]: e.target.value });
+    const handleChange = (autoCompName,autoCompValue) => {
+     
+      const name =autoCompName
+      const value =autoCompValue
+      setTextInput({ ...textInput, [name]: value });
+      
     };
+    const trimString=(str)=>{
+        return str.split(",")[0]
+      }
     const handelClick = async () => {
-      /*  const x=  await coordinate(textInput.location)
-    console.log(x) */
-      props.rides.addRide(
-        textInput.location,
-        textInput.destination,
-        textInput.departureTime,
+        const x=  await coordinate(textInput.location)
+        const y=  await coordinate(textInput.destination)
+        console.log(x,y)
+        props.rides.addRide(
+          trimString(textInput.location),
+          trimString(textInput.destination),
+        toSqlDate(textInput.departureTime),
         props.users.loggedInUser.id,
         100,
         0,
         props.users.users
       );
-      setTextInput({
+      
+      /* setTextInput({
         ...textInput,
         location: "",
         destination: "",
         departureTime: "",
         DriverId: "",
-      });
+      }); */
     };
-    /*  const coordinate = async(value)=>{
-      const results = await getGeocode({address: value });
-      const { lat, lng } = await getLatLng(results[0]);
-      return {lat,lng}
-      } */
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const [address, setAddress] = React.useState("");
-    const [coordinates,setCoordinates]=React.useState({lat:null,lng:null})
-    const handleSelect = async (value) => {
-      const results = await geocodeByAddress(value)
-      const latLng = await getLatLng (results[0])
-      setAddress(value)
-      setCoordinates(latLng)
 
-    };
+    const coordinate = async(value)=>{
+    const results = await geocodeByAddress(value)
+    const latLng = await getLatLng (results[0])
+    return latLng
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+   
+  
     return (
       <div className={classes.root}>
-        <PlacesAutocomplete
-          value={address}
-          onChange={setAddress}
-          onSelect={handleSelect}
-        >
-          {({
-            getInputProps,
-            suggestions,
-            getSuggestionItemProps,
-            loading,
-          }) => (
-            <div>
-              <p>Latitude:{coordinates.lat}</p>
-              <p>Longitude:{coordinates.lng}</p>
-              <input {...getInputProps({ placeholder: "Type address",name:'location' })} />
-              <div>
-                {loading ? <div>...loading</div>:null}
-                {suggestions.map((suggestion)=>{
-                  const style =suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' }
-                  
-                  return <div {...getSuggestionItemProps(suggestion,{style})}>{suggestion.description}</div>
-                })}
-              </div>
-            </div>
-          )}
-        </PlacesAutocomplete>
+        {/* <GoogleMaps textInput={textInput}  handleChange={handleChange} /> */}
 
         <Grid
           container
@@ -159,7 +123,8 @@ const CreateRide = inject(
           spacing={3}
         >
           <Grid item xs={12}>
-            <TextField
+          <GoogleMaps  name={"location"}  handleChange={handleChange} />
+           {/*  <TextField
               id="outlined-textarea"
               label=" Location"
               placeholder="Placeholder"
@@ -167,11 +132,11 @@ const CreateRide = inject(
               variant="outlined"
               value={textInput.location}
               name="location"
-              onChange={handleChange}
-            />
+              
+            /> */}
           </Grid>
           <Grid item xs={12}>
-            <TextField
+           {/*  <TextField
               id="outlined-textarea"
               label="Destination"
               placeholder="Placeholder"
@@ -180,7 +145,8 @@ const CreateRide = inject(
               value={textInput.destination}
               name="destination"
               onChange={handleChange}
-            />
+            /> */}
+            <GoogleMaps  name={"destination"}  handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -189,7 +155,7 @@ const CreateRide = inject(
               type="datetime-local"
               name="departureTime"
               defaultValue={textInput.departureTime}
-              onChange={handleChange}
+              onChange={(e)=>handleChange("departureTime",e.target.value)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,

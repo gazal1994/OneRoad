@@ -125,7 +125,7 @@ const AvailableRide = inject('users', 'rides')(observer((props) => {
                     primary={ride.destination}
                   />
                   <ListItemSecondaryAction>
-                    <Button className={classe.button}>join</Button>
+                    <Button onClick={handleClick} className={classe.button}>join</Button>
                   </ListItemSecondaryAction>
                 </ListItem>
          
