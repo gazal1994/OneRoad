@@ -19,6 +19,9 @@ import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+const dateFormat = require('dateformat')
+const now = new Date();
 const use = makeStyles((theme) => ({
     margin: {
       margin: theme.spacing(1),
@@ -29,6 +32,7 @@ const use = makeStyles((theme) => ({
       border: "1px solid",
       borderColor: "#c89666",
       textTransform: "none",
+      borderRadius:'100px',
       width: 50,
       "&:hover": {
         backgroundColor: "#c89666",
@@ -79,6 +83,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius:'5px',
     color:'white'
   },
+  secondary:{
+    color:'#c89666'
+  },
+  Arrow:{
+    color:'white',
+    marginLeft: theme.spacing(-5),
+  }
   }));
   
   function generate(element) {
@@ -97,9 +108,16 @@ const AvailableRide = inject('users', 'rides')(observer((props) => {
     const setTextInput = props.setTextInput
     const passengerId = props.users.loggedInUser.id
     const ride = props.ride
+    const open=props.open
+    const setOpen=props.setOpen
+    const trimString=props.trimString
     console.log(ride.id)
-    const handleClick = () => {
-        props.rides.requestRide(passengerId, ride.id, props.users.users)
+
+    const handleClick = async () => {
+        const answer=await  props.rides.requestRide(passengerId, ride.id, props.users.users)
+        if(answer){
+          setOpen({...open,error:false,success:true,note:`Have a nice ride ,from ${trimString(textInput.location)} to ${trimString(textInput.destination)}`})
+        }
         setTextInput({ ...textInput, location: '', destination: '', departureTime: '', passengerId: '' })
     }
     return (
@@ -113,16 +131,15 @@ const AvailableRide = inject('users', 'rides')(observer((props) => {
                     </Avatar>
                   </ListItemAvatar> */}
                   <ListItemText
-                    primary={ride.location}
-                    secondary='david'
+                    classes={{secondary:classes.secondary}}
+                    primary={ride.location.name}
+                    secondary={ride.driver.name}
                   />
-
-                    <IconButton edge="start" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-
+                      <ArrowRightAltIcon className={classes.Arrow} />
                   <ListItemText
-                    primary={ride.destination}
+                    classes={{secondary:classes.secondary}}
+                    primary={ride.destination.name}
+                    secondary={dateFormat(ride.driver.departure_time,'mmm dd HH:MM')}
                   />
                   <ListItemSecondaryAction>
                     <Button onClick={handleClick} className={classe.button}>join</Button>

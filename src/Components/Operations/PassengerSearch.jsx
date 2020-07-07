@@ -23,10 +23,11 @@ import Typography from '@material-ui/core/Typography';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GoogleMaps from '../Common/Input'
-
-const trimString=(str)=>{
-  return str.split(",")[0]
-}
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import Slide from '@material-ui/core/Slide';
+const dateFormat = require('dateformat')
+const now = new Date();
 
 const use = makeStyles((theme) => ({
   margin: {
@@ -82,8 +83,13 @@ title: {
 },
 list:{
   backgroundColor:'white',
+},
+snak: {
+  width: '100%',
+  '& > * + *': {
+    marginTop: theme.spacing(2),
+  },
 }
-
 }));
 
 
@@ -93,6 +99,22 @@ const PassengerSearch = inject(
   "rides"
 )(
   observer((props) => {
+    const trimString=(str)=>{
+      return str.split(",")[0]
+    }
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return
+      }
+      setOpen({...open,error:false,success:false,error:''});
+    }
+
+    function SlideTransition(props) {
+      return <Slide {...props} direction="right" />;
+    }
+    const [open, setOpen] = React.useState({error:false,success:false});
+
+
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
 
@@ -104,12 +126,13 @@ const PassengerSearch = inject(
         await props.rides.getRides();
       })();
     }, []);
-
+    const timeNow = dateFormat(now, "yyyy-mm-dd'T'HH:MM")
+    console.log(timeNow)
     const [relevantRides, setRelevantRides] = useState([]);
     const [textInput, setTextInput] = useState({
       location: "",
       destination: "",
-      departureTime: "2020-07-08T10:30",
+      departureTime: `${timeNow}`,
     });
     const handleChange = (autoCompName,autoCompValue) => {
      
@@ -119,14 +142,22 @@ const PassengerSearch = inject(
       
     };
     const handelClick = () => {
+      if(textInput.location.length===0){
+        setOpen({...open,error:true,success:false,note:"From where you want to cutch a ride"})
+      }
+      if(textInput.destination.length===0){
+        setOpen({...open,error:true,success:false,note:"Where you want to go"})
+      }
+      else {
       const relevant = props.rides.rides.filter(
         (r) =>
-          r.location == trimString(textInput.location) &&
-          r.destination == trimString(textInput.destination) //&&
+          r.location.name == trimString(textInput.location) &&
+          r.destination.name == trimString(textInput.destination) //&&
         // r.departureTime == textInput.departureTime
       );
       setRelevantRides([...relevant]);
     };
+  }
     console.log(textInput)
     return (
       <div className={classes.root}>
@@ -177,7 +208,7 @@ const PassengerSearch = inject(
               }}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12}  >
             <Button
               className={classe.button}
               onClick={handelClick}
@@ -186,13 +217,32 @@ const PassengerSearch = inject(
             >
               Search
             </Button>
-          </Grid>
+            </Grid>
+          <Grid  item xs={12} className={classes.demo}>
+          <List  dense={dense}>
+       {/*  <Typography variant="h6" align="center" className={classes.title}>
+        Avatar with text and icon
+      </Typography> */}
+        {relevantRides.map((r) => (
+          <AvailableRide
+            key={r.id}
+            ride={r}
+            textInput={textInput}
+            setTextInput={setTextInput}
+            open={open}
+            setOpen={setOpen}
+            trimString={trimString}
+          />
+        ))}
+             
+        </List>
+           </Grid>
         </Grid>
 
      
      
       
-      <Grid
+   {/*    <Grid
       container
       direction="column"
       justify="center"
@@ -203,24 +253,24 @@ const PassengerSearch = inject(
      
       <div className={classes.demo}>
      
-        <List  dense={dense}>
-       {/*  <Typography variant="h6" align="center" className={classes.title}>
-        Avatar with text and icon
-      </Typography> */}
-        {relevantRides.map((r) => (
-          <AvailableRide
-            key={r.id}
-            ride={r}
-            textInput={textInput}
-            setTextInput={setTextInput}
-          />
-        ))}
-             
-        </List>
+       
           </div>
         </Grid>
-        </Grid>
-        </div>
+        </Grid> */}
+        <div className={classes.snak}>
+         <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical:'top', horizontal:'left' }} open={open.error} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+        {open.note}
+        </Alert>
+      </Snackbar>
+      <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical:'top', horizontal:'left' }} open={open.success} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+        {open.note}
+        </Alert>
+      </Snackbar>
+      </div>
+
+      </div>
     );
   })
 );

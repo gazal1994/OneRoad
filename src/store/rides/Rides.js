@@ -20,6 +20,9 @@ export class Rides {
     const newRideId = await axios.post('http://localhost:3200/ride', newRide)
     newRide.id = newRideId.data[0]
     this.rides.push(new Ride(newRide))
+    if(newRide.id){
+      return true
+    }
   }
 
   @action removeRide = async (id) => {
@@ -34,6 +37,9 @@ export class Rides {
     const ride = this.rides.find(r => r.id === rideId)
     const passenger = users.find(u => u.id === responsePassengerId)
     ride.pendingPassengers.push(passenger)
+    if(responsePassengerId){
+      return true
+    }
   }
 
   @action approveRide = async (passengerId, rideId, users) => {
