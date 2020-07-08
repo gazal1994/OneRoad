@@ -35,7 +35,9 @@ const ListOfRequestedRides = inject('users', 'rides')(observer((props) => {
                         <p>{r.location.name} - {r.destination.name}</p>
                         <p>driver:{r.driver.name}</p>
                         <p>approved</p>
+                        <p>sssss</p>
                         <Join name={props.users.loggedInUser.name}  ride={r.location.name+'-'+r.destination.name} />
+                        
                       </div>
                      
                       </div>
