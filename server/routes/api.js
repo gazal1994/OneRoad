@@ -91,6 +91,7 @@ router.post('/ride', async function (req, res) {//add new ride
     const ride = req.body
     const [locationId] = await sequelize
         .query(`INSERT INTO location VALUES(null, '${ride.location.name}', '${ride.location.longitude}', '${ride.location.latitude}')`)
+        console.log(locationId)
     const [destinationId] = await sequelize
         .query(`INSERT INTO location VALUES(null, '${ride.destination.name}', '${ride.destination.longitude}', '${ride.destination.latitude}')`)
     const result = await sequelize
