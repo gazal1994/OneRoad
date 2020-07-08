@@ -19,8 +19,8 @@ const App = inject(
 
     useEffect(() => {
       (async () => {
-        await props.rides.getRides()
         await props.users.getUsers()
+        await props.rides.getRides()
         let id = null
         if (!localStorage.getItem('user')) {
           id = prompt('your id please')
