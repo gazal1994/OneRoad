@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AnalyticsResults from './AnalyticsResults'
 import Grid from '@material-ui/core/Grid';
 import '../../App.css'
+import NavBar from '../Landing/NavBar'
 const dateFormat = require('dateformat')
 const now = new Date();
 
@@ -73,11 +74,14 @@ const Analytics = inject(
       const backAnalytics = await props.users.analyticsSearch(props.users.loggedInUser.id, toSqlDate(chosenDate.from), toSqlDate(chosenDate.to))
       setAnalytics([...backAnalytics])
     }
-    
+    const userName=props.users.users.find(u=>u.id==props.users.loggedInUser.id)
  
-
+    console.log(userName)
     return (
+      <React.Fragment>
+       <NavBar />
       <div className={classes.root}>
+        
         <Grid container
           direction="column"
           justify="center"
@@ -113,9 +117,10 @@ const Analytics = inject(
           <Grid item xs={12}>
             <Button className={classe.button} onClick={handelClick} variant="contained" color="primary">Search</Button>
           </Grid>
-          {analytics.map(a => <AnalyticsResults key={chosenDate.userId} income={a.income} expense={a.expense} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
+          {analytics.map(a => <AnalyticsResults key={chosenDate.userId} income={a.income} expense={a.expense} name={userName.name} ridesJoined={a.ridesJoined} carpools={a.carpools} />)}
         </Grid>
       </div>
+      </React.Fragment>
     );
   })
 );

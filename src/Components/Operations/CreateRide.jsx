@@ -15,6 +15,7 @@ import getDistance from 'geolib/es/getDistance';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Slide from '@material-ui/core/Slide';
+import NavBar from '../Landing/NavBar'
 const dateFormat = require('dateformat')
 const now = new Date();
 const use = makeStyles((theme) => ({
@@ -149,6 +150,8 @@ const CreateRide = inject(
     }
 
     return (
+      <React.Fragment>
+       <NavBar />
       <div className={classes.root}>
 
 
@@ -205,6 +208,7 @@ const CreateRide = inject(
           </Snackbar>
         </div>
       </div>
+      </React.Fragment>
     );
   })
 );

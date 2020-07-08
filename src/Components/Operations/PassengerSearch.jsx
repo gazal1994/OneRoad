@@ -26,6 +26,7 @@ import GoogleMaps from '../Common/Input'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Slide from '@material-ui/core/Slide';
+import NavBar from '../Landing/NavBar'
 const dateFormat = require('dateformat')
 const now = new Date();
 
@@ -160,6 +161,8 @@ const PassengerSearch = inject(
   }
     console.log(textInput)
     return (
+      <React.Fragment>
+      <NavBar />
       <div className={classes.root}>
         <Grid
           container
@@ -232,6 +235,7 @@ const PassengerSearch = inject(
       </div>
 
       </div>
+      </React.Fragment>
     );
   })
 );

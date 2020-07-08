@@ -9,7 +9,7 @@ export class Rides {
   @action getRides = async () => {
     const rideData = await axios.get('http://localhost:3200/rides');
     const ridesArray = []
-    rideData.data.forEach(r => ridesArray.push(new Ride(r.id, r.location, r.destination, r.departureTime, r.driver, r.distance, r.is_done,
+    rideData.data.forEach(r => ridesArray.push(new Ride(r.id, r.location, r.destination, r.departure_time, r.driver,  r.distance,r.is_done,
       r.pendingPassengers, r.approvedPassengers)))
     this.rides = ridesArray
     console.log(this.rides);

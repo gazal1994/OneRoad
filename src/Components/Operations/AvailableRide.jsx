@@ -126,6 +126,7 @@ const AvailableRide = inject('users', 'rides')(observer((props) => {
     const open=props.open
     const setOpen=props.setOpen
     const trimString=props.trimString
+    
     console.log(ride.id)
 
     const handleClick = async () => {
