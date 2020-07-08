@@ -15,6 +15,7 @@ import getDistance from 'geolib/es/getDistance';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Slide from '@material-ui/core/Slide';
+import NavBar from '../Landing/NavBar'
 const dateFormat = require('dateformat')
 const now = new Date();
 const use = makeStyles((theme) => ({
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     '& > * + *': {
       marginTop: theme.spacing(2),
     },
-  
+
   },
 }));
 
@@ -72,85 +73,87 @@ const CreateRide = inject(
   observer((props) => {
     const classes = useStyles();
     const classe = use();
-    const toSqlDate = (date) =>{
-    const newDtae=new Date(date).toISOString().slice(0, 19).replace("T", " ");
-    return newDtae
+    const toSqlDate = (date) => {
+      const newDtae = new Date(date).toISOString().slice(0, 19).replace("T", " ");
+      return newDtae
     }
 
     function SlideTransition(props) {
       return <Slide {...props} direction="right" />;
     }
     const timeNow = dateFormat(now, "yyyy-mm-dd'T'HH:MM")
-    const [open, setOpen] = React.useState({error:false,success:false});
+    const [open, setOpen] = React.useState({ error: false, success: false });
     const [textInput, setTextInput] = useState({
       location: "",
       destination: "",
       departureTime: `${timeNow}`,
     });
-    const handleChange = (autoCompName,autoCompValue) => {
-     
-      const name =autoCompName
-      const value =autoCompValue
+    const handleChange = (autoCompName, autoCompValue) => {
+
+      const name = autoCompName
+      const value = autoCompValue
       setTextInput({ ...textInput, [name]: value });
-      
+
     };
-    const trimString=(str)=>{
-        return str.split(",")[0]
-      }
+    const trimString = (str) => {
+      return str.split(",")[0]
+    }
 
 
-      console.log(textInput)
+    console.log(textInput)
     const handelClick = async () => {
-       
-        if(textInput.location.length===0){
-          setOpen({...open,error:true,success:false,note:"From where you start to ride"})
-        }
-        if(textInput.destination.length===0){
-          setOpen({...open,error:true,success:false,note:"Where you want to go"})
-        }
-        else {
-        const x=  await coordinate(textInput.location)
-        const y=  await coordinate(textInput.destination)
-        const dist= (getDistance(x,y,1)/1000)
-        const location = {name: trimString(textInput.location),longitude:x.lng,latitude:x.lat}
-        const destination ={name:trimString(textInput.destination),longitude:y.lng,latitude:y.lat}
+
+      if (textInput.location.length === 0) {
+        setOpen({ ...open, error: true, success: false, note: "From where you start to ride" })
+      }
+      if (textInput.destination.length === 0) {
+        setOpen({ ...open, error: true, success: false, note: "Where you want to go" })
+      }
+      else {
+        const x = await coordinate(textInput.location)
+        const y = await coordinate(textInput.destination)
+        const dist = (getDistance(x, y, 1) / 1000)
+        const location = { name: trimString(textInput.location), longitude: x.lng, latitude: x.lat }
+        const destination = { name: trimString(textInput.destination), longitude: y.lng, latitude: y.lat }
         console.log(location)
         console.log(destination)
-        const answer =await props.rides.addRide(
-        location,
-        destination,
-        toSqlDate(textInput.departureTime),
-        props.users.loggedInUser.id,
-        dist,
-        0,
-        props.users.users)
+        const answer = await props.rides.addRide(
+          location,
+          destination,
+          toSqlDate(textInput.departureTime),
+          props.users.loggedInUser.id,
+          dist,
+          0,
+          props.users.users)
 
-        if(answer){
-          setOpen({...open,error:false,success:true,note:`The ride created successfully,from ${trimString(textInput.location)} to ${trimString(textInput.destination)}`})
-        
-        }
-        }
+        if (answer) {
+          setOpen({ ...open, error: false, success: true, note: `The ride created successfully,from ${trimString(textInput.location)} to ${trimString(textInput.destination)}` })
 
-      } 
-      
-      
-    
-    const coordinate = async(value)=>{
-    const results = await geocodeByAddress(value)
-    const latLng = await getLatLng (results[0])
-    return latLng
+        }
+      }
+
+    }
+
+
+
+    const coordinate = async (value) => {
+      const results = await geocodeByAddress(value)
+      const latLng = await getLatLng(results[0])
+      return latLng
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const handleClose = (event, reason) => {
       if (reason === 'clickaway') {
         return
       }
-      setOpen({...open,error:false,success:false,error:''});
+      setOpen({ ...open, error: false, success: false, error: '' });
     }
-  
+
     return (
+      <React.Fragment>
+       <NavBar />
       <div className={classes.root}>
-        
+
 
         <Grid
           container
@@ -160,12 +163,12 @@ const CreateRide = inject(
           spacing={3}
         >
           <Grid item xs={12}>
-          <GoogleMaps  name={"location"}  handleChange={handleChange} />
-          
+            <GoogleMaps name={"location"} handleChange={handleChange} />
+
           </Grid>
           <Grid item xs={12}>
-          
-            <GoogleMaps  name={"destination"}  handleChange={handleChange} />
+
+            <GoogleMaps name={"destination"} handleChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -174,7 +177,7 @@ const CreateRide = inject(
               type="datetime-local"
               name="departureTime"
               defaultValue={textInput.departureTime}
-              onChange={(e)=>handleChange("departureTime",e.target.value)}
+              onChange={(e) => handleChange("departureTime", e.target.value)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -193,18 +196,19 @@ const CreateRide = inject(
           </Grid>
         </Grid>
         <div className={classes.snak}>
-         <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical:'top', horizontal:'left' }} open={open.error} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error">
-        {open.note}
-        </Alert>
-      </Snackbar>
-      <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical:'top', horizontal:'left' }} open={open.success} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-        {open.note}
-        </Alert>
-      </Snackbar>
+          <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical: 'top', horizontal: 'left' }} open={open.error} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+              {open.note}
+            </Alert>
+          </Snackbar>
+          <Snackbar TransitionComponent={SlideTransition} anchorOrigin={{ vertical: 'top', horizontal: 'left' }} open={open.success} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success">
+              {open.note}
+            </Alert>
+          </Snackbar>
+        </div>
       </div>
-      </div>
+      </React.Fragment>
     );
   })
 );
