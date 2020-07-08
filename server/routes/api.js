@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('mysql://root:@localhost/oneroad_db')
+const sequelize = new Sequelize('mysql://root:root@localhost/oneroad_db')
 sequelize
     .authenticate()
     .then(() => {

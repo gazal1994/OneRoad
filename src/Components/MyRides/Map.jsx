@@ -60,6 +60,9 @@ const Map = inject('users', 'rides')(observer((props) => {
       }
     ]);
   }, [ride])
+  // const getDistanc=(dist)=>{
+  //   console.log(dist)
+  //  }
   const onMapClick = React.useCallback((e) => {
     console.log(e)
     console.log(markers)
@@ -109,7 +112,7 @@ const Map = inject('users', 'rides')(observer((props) => {
         onClick={onMapClick}
         onLoad={onMapLoad}
       >
-        <MapDirectionsRenderer markers={markers} />
+        <MapDirectionsRenderer   markers={markers} />
         {markers.map((marker) => (
           <Marker
             key={`${marker.lat}-${marker.lng}`}

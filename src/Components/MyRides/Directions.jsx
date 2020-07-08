@@ -43,6 +43,7 @@ function MapDirectionsRenderer(markers) {
                 //console.log(result.rows[0].elements[0].distance.text, result.rows[0].elements[0].duration.text)
                 if (status === "OK") {
                     setDistance(result);
+                    // markers.getDistanc(result.rows[0].elements[0].distance.text +" "+ result.rows[0].elements[0].duration.text)
                 } else {
                     setError(result);
                 }

@@ -26,6 +26,8 @@ import GoogleMaps from '../Common/Input'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Slide from '@material-ui/core/Slide';
+
+
 const dateFormat = require('dateformat')
 const now = new Date();
 
@@ -198,13 +200,16 @@ const PassengerSearch = inject(
               color="primary"
             >
               Search
+              
             </Button>
+            
             </Grid>
           <Grid  item xs={12} className={classes.demo}>
           <List  dense={dense}>
       
         {relevantRides.map((r) => (
           <AvailableRide
+           name={r.driver.name}
             key={r.id}
             ride={r}
             textInput={textInput}

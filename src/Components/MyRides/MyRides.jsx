@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { observer, inject } from 'mobx-react'
 import PendingPassengerList from './PendingPassengersList'
 import ApprovedPassengersList from './ApprovedPassengersList'
+import Join from '../../srcSocketio/components/Join/Join';
 import { Link } from 'react-router-dom';
 
 const MyRides = inject('users', 'rides')(observer((props) => {
@@ -27,6 +28,8 @@ const MyRides = inject('users', 'rides')(observer((props) => {
             <PendingPassengerList key={r.id + 'p'} ride={r} />
             <p>approved passengers:</p>
             <ApprovedPassengersList key={r.id + 'a'} ride={r} />
+             <Join name={r.driver.name} ride={r.location.name+'-'+r.destination.name}/>
+           
           </div>
         )
       }

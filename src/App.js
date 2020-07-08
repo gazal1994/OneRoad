@@ -11,6 +11,8 @@ import PassengerSearch from './Components/Operations/PassengerSearch'
 import CreateRide from './Components/Operations/CreateRide'
 import ListOfRequestedRides from './Components/MyRides/ListOfRequestedRides'
 import Map from './Components/MyRides/Map'
+import Chat from './srcSocketio/components/Chat/Chat';
+import Join from './srcSocketio/components/Join/Join';
 const App = inject(
   "users",
   "rides"
@@ -40,6 +42,8 @@ const App = inject(
       <React.Fragment>
         <CssBaseline />
         <Router>
+        {/* <Route path="/" exact component={Join} /> */}
+        <Route path="/chat" component={Chat} />
           <Route exact path="/Landing" component={Landing} />
           <Route exact path="/MyRides" component={MyRides} />
           <Route exact path="/operation/passenger" component={PassengerSearch} />
