@@ -10,7 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CallIcon from '@material-ui/icons/Call';
 import PersonIcon from '@material-ui/icons/Person';
-
+import Join from '../../srcSocketio/components/Join/Join';
 const use = makeStyles((theme) => ({
     margin: {
       margin: theme.spacing(1),
@@ -90,7 +90,10 @@ const PendingPasssenger = inject('users', 'rides')(observer((props) => {
                 
                 variant="contained"
                 color="primary" onClick={handleClick}Approve passenger /></span>}<PersonIcon />{passenger.name}
-            <span style={{color:'white'}}>    <CallIcon /> {passenger.phone}</span></Typography> {/* </Tooltip>  */}
+            <span style={{color:'white'}}>    <CallIcon /> {passenger.phone}</span>
+            <Join name= {props.users.loggedInUser.name}  ride={ride.location.name+'-'+ride.destination.name} />
+
+          </Typography> {/* </Tooltip>  */}
            
 
         </div>

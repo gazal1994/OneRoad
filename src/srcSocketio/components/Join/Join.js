@@ -7,7 +7,6 @@ export default function SignIn(props) {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   useEffect(() => {
-    debugger
     console.log(props.ride)
     setName(props.name)
      setRoom(props.ride)
