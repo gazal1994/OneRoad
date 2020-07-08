@@ -14,7 +14,7 @@ const ListOfRequestedRides = inject('users', 'rides')(observer((props) => {
             .filter(r => r.approvedPassengers.find(p => p.id == props.users.loggedInUser.id))
         setMyRequestedRides({ pending: PendingdRides, approved: approvedRides })
     }, [user])
-
+    console.log(myRequestedRides)
     return (
         <div>
             <h4>My Requests</h4>
@@ -24,22 +24,19 @@ const ListOfRequestedRides = inject('users', 'rides')(observer((props) => {
                         <p>{r.location.name} - {r.destination.name}</p>
                         <p>{r.driver.name}</p>
                         <p>pending</p>
+                        <Join name={props.users.loggedInUser.name}  ride={r.location.name+'-'+r.destination.name} /> 
+
                     </div>
                 )
             }
             )}
             {myRequestedRides.approved.map(r => {
                 return (
-                    <div>
+                   
                     <div key={r.id + 'a'} style={{ border: '2px solid green' }}>
                         <p>{r.location.name} - {r.destination.name}</p>
                         <p>driver:{r.driver.name}</p>
-                        <p>approved</p>
-                        <p>sssss</p>
-                        <Join name={props.users.loggedInUser.name}  ride={r.location.name+'-'+r.destination.name} />
-                        
-                      </div>
-                     
+                        <p>approved</p>                        
                       </div>
                 )
             }
