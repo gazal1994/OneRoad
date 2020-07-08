@@ -9,6 +9,9 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
+import {
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 import { formatRelative } from "date-fns";
 import "@reach/combobox/styles.css";
 import mapStyles from "./mapStyles";
@@ -29,11 +32,10 @@ if (navigator.geolocation) {
   });
 }
 const Map = inject('users', 'rides')(observer((props) => {
-  //let ride = props.rides.rides.find(f => f.id == props.match.params.rideId)
   const rideId = props.match.params.rideId
-  const ride = props.rides.rides.find(r => r.id == rideId)
-  console.log(ride)
-
+  //let ride = null
+  const [isRide, setIsRide] = useState(false)
+  const [ride, setRide] = useState(null)
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyD94ubm5h4StZkJ71eoCADnoezcpzTAo4k",
     libraries,
@@ -41,28 +43,48 @@ const Map = inject('users', 'rides')(observer((props) => {
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
   useEffect(() => {
-    setMarkers((current) => [
-      ...current,
-      {
-        lat: parseFloat(ride.location.latitude),
-        lng: parseFloat(ride.location.longitude),
-        time: new Date(),
-      },
-      /*  {
-         lat: initialLocation.lat,
-         lng: initialLocation.lng,
-         time: new Date(),
-       }, */
-      {
-        lat: parseFloat(ride.destination.latitude),
-        lng: parseFloat(ride.destination.longitude),
-        time: new Date(),
-      }
-    ]);
+    //  ride = props.rides.rides.find(r => r.id == rideId)
+    setRide(props.rides.rides.find(r => r.id == rideId))
+    console.log(ride);
+    if (ride) {
+      //setRide(ride2)
+      setIsRide(true)
+      setMarkers((current) => [
+        ...current,
+        {
+          lat: parseFloat(ride.location.latitude),
+          lng: parseFloat(ride.location.longitude),
+          time: new Date(),
+        },
+        {
+          lat: parseFloat(ride.destination.latitude),
+          lng: parseFloat(ride.destination.longitude),
+          time: new Date(),
+        }
+      ]);
+    }
+  }, [props.rides.rides])
+
+  useEffect(() => {
+    if (ride) {
+      //setRide(ride2)
+      setIsRide(true)
+      setMarkers((current) => [
+        ...current,
+        {
+          lat: parseFloat(ride.location.latitude),
+          lng: parseFloat(ride.location.longitude),
+          time: new Date(),
+        },
+        {
+          lat: parseFloat(ride.destination.latitude),
+          lng: parseFloat(ride.destination.longitude),
+          time: new Date(),
+        }
+      ]);
+    }
   }, [ride])
   const onMapClick = React.useCallback((e) => {
-    console.log(e)
-    console.log(markers)
     setMarkers((current) => [
       ...current,
       {
@@ -76,20 +98,22 @@ const Map = inject('users', 'rides')(observer((props) => {
   const onMapLoad = React.useCallback((map) => {
     mapRef.current = map;
   }, []);
-  const panTo = React.useCallback(({ lat, lng }) => {
-    mapRef.current.panTo({ lat, lng });
-    setMarkers((current) => [
-      ...current,
-      {
-        lat: lat,
-        lng: lng,
-        time: new Date(),
-      },
-    ])
-    mapRef.current.setZoom(17);
-  }, []);
+  /*  const panTo = React.useCallback(({ lat, lng }) => {
+     mapRef.current.panTo({ lat, lng });
+     setMarkers((current) => [
+       ...current,
+       {
+         lat: lat,
+         lng: lng,
+         time: new Date(),
+       },
+     ])
+     mapRef.current.setZoom(17);
+   }, []); */
   if (loadError) return "Error";
   if (!isLoaded) return "Loading...";
+  console.log(ride);
+
   return (
     <div>
       <h1>
@@ -146,7 +170,18 @@ const Map = inject('users', 'rides')(observer((props) => {
           </InfoWindow>
         ) : null}
       </GoogleMap>
-      <p style={{ color: 'white' }}>Distance:{ride.distance}</p>
+
+      {ride ?
+        <div style={{ color: 'white' }}>
+          <p >price: {ride.distance / (ride.approvedPassengers.length + 1)}</p>
+          <p>approved passengers:</p>
+          {ride.approvedPassengers.map(p => <p>{p.name}</p>)}
+          {ride.driver.id == props.users.loggedInUser.id ?
+            ride.isDone ? <p>Ride Finished</p> :
+              <button onClick={() => props.rides.finishRide(ride.id)}>Finish Ride</button>
+            : null}
+        </div>
+        : null}
     </div>
   );
 }))

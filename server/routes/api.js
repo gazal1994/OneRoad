@@ -35,7 +35,16 @@ router.post('/user', function (req, res) {
             res.send(result)
         })
 })
-
+router.put('/user/:type/:id/:amount', async function (req, res) {
+    const id = req.params.id
+    const amount = req.params.amount
+    const type = req.params.type
+    const query = `UPDATE user
+                SET ${type} = ${amount}
+                WHERE id=${id};`
+    const result = await sequelize.query(query)
+    res.send(result)
+})
 router.delete('/user/:id', function (req, res) {
     const id = req.params.id
     sequelize

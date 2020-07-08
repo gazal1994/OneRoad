@@ -55,6 +55,15 @@ export class Rides {
     await axios.put(`http://localhost:3200/ride/${rideId}`);
     const ride = this.rides.find(r => r.id === rideId)
     ride.isDone = true
+    const rideCost = ride.distance / (ride.approvedPassengers.length + 1)
+    const newIncome = ride.driver.income + rideCost
+    await axios.put(`http://localhost:3200/user/income/${ride.driver.id}/${newIncome}`)
+    ride.driver.income = newIncome
+    for (let passenger of ride.approvedPassengers) {
+      const newExpense = passenger.expense + rideCost
+      await axios.put(`http://localhost:3200/user/expense/${passenger.id}/${newExpense}`)
+      passenger.expense = newExpense
+    }
   }
 
 
