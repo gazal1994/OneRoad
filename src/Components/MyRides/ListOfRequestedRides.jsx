@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { observer, inject } from 'mobx-react'
+import Join from '../../srcSocketio/components/Join/Join';
 
 const ListOfRequestedRides = inject('users', 'rides')(observer((props) => {
     console.log('1111111')
@@ -20,7 +21,7 @@ const ListOfRequestedRides = inject('users', 'rides')(observer((props) => {
             {myRequestedRides.pending.map(r => {
                 return (
                     <div key={r.id + 'p'} style={{ border: '2px solid red' }}>
-                        <p>{r.location.name} => {r.destination.name}</p>
+                        <p>{r.location.name} - {r.destination.name}</p>
                         <p>{r.driver.name}</p>
                         <p>pending</p>
                     </div>
@@ -29,11 +30,15 @@ const ListOfRequestedRides = inject('users', 'rides')(observer((props) => {
             )}
             {myRequestedRides.approved.map(r => {
                 return (
+                    <div>
                     <div key={r.id + 'a'} style={{ border: '2px solid green' }}>
-                        <p>{r.location.name} => {r.destination.name}</p>
+                        <p>{r.location.name} - {r.destination.name}</p>
                         <p>driver:{r.driver.name}</p>
                         <p>approved</p>
-                    </div>
+                        <Join name={props.users.loggedInUser.name}  ride={r.location.name+'-'+r.destination.name} />
+                      </div>
+                     
+                      </div>
                 )
             }
             )}

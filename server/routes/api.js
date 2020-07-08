@@ -35,7 +35,16 @@ router.post('/user', function (req, res) {
             res.send(result)
         })
 })
-
+router.put('/user/:type/:id/:amount', async function (req, res) {
+    const id = req.params.id
+    const amount = req.params.amount
+    const type = req.params.type
+    const query = `UPDATE user
+                SET ${type} = ${amount}
+                WHERE id=${id};`
+    const result = await sequelize.query(query)
+    res.send(result)
+})
 router.delete('/user/:id', function (req, res) {
     const id = req.params.id
     sequelize
@@ -91,6 +100,7 @@ router.post('/ride', async function (req, res) {//add new ride
     const ride = req.body
     const [locationId] = await sequelize
         .query(`INSERT INTO location VALUES(null, '${ride.location.name}', '${ride.location.longitude}', '${ride.location.latitude}')`)
+        console.log(locationId)
     const [destinationId] = await sequelize
         .query(`INSERT INTO location VALUES(null, '${ride.destination.name}', '${ride.destination.longitude}', '${ride.destination.latitude}')`)
     const result = await sequelize
