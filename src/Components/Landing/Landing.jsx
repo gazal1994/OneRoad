@@ -66,7 +66,7 @@ const Landing = inject(
            <Grid item  xs={12}>
         <Link
           style={{ textDecoration: "none", color: "white"}}
-          to="/operation/passenger"
+          to="/operation/CreateRide"
         >
         <Button size="medium" className={classes.button} variant="contained" color="primary">Create Carpool</Button>  
         
@@ -75,7 +75,7 @@ const Landing = inject(
         <Grid item xs={12}>
         <Link
           style={{ textDecoration: "none", color: "white" }}
-          to="/operation/CreateRide"
+          to="/operation/passenger"
         >
          <Button size="medium" variant="contained"  className={classes.button}   >Catch A  Ride</Button>  
         </Link>

@@ -1,8 +1,13 @@
+
+const http = require('http');
 const express = require('express')
 const app = express()
 const bodyParser = require("body-parser");
 const path = require('path');
 const api = require('./server/routes/api')
+const server = http.createServer(app);
+const socketio = require('socket.io');
+const cors = require('cors');
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -18,8 +23,52 @@ app.use(function (req, res, next) {
 })
 
 app.use('/', api)
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./server/users');
+
+const router = require('./server/router');
+
+// const app = express();
+// const server = http.createServer(app);
+const io = socketio(server);
+
+app.use(cors());
+app.use(router);
+
+io.on('connect', (socket) => {
+  socket.on('join', ({ name, room }, callback) => {
+    const { error, user } = addUser({ id: socket.id, name, room });
+
+    if(error) return callback(error);
+
+    socket.join(user.room);
+
+    socket.emit('message', { user: 'admin', text: `${user.name}, welcome to ride ${user.room}.`});
+    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
+
+    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+
+    callback();
+  });
+
+  socket.on('sendMessage', (message, callback) => {
+    const user = getUser(socket.id);
+
+    io.to(user.room).emit('message', { user: user.name, text: message });
+
+    callback();
+  });
+
+  socket.on('disconnect', () => {
+    const user = removeUser(socket.id);
+
+    if(user) {
+      io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
+      io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
+    }
+  })
+});
 
 const port = 3200
-app.listen(port, function () {
+server.listen(port, function () {
   console.log(`Server's UP, on port ${port}`)
 })

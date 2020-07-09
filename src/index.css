@@ -11,10 +11,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   
     font-family: 'Montserrat', sans-serif;
-    background-image: url("./bird-s-eye-view-photography-of-road-in-the-middle-of-desert-1201673.jpg");
+    background-image: url("./drive-empty-highway-lane-210112.jpg");
     background-repeat: no-repeat;
+    object-fit: cover;
     background-size: cover;
     height: 800px;
+
     
  
 }

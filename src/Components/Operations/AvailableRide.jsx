@@ -20,6 +20,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import Join from '../../srcSocketio/components/Join/Join';
 const dateFormat = require('dateformat')
 const now = new Date();
 const use = makeStyles((theme) => ({
@@ -32,7 +33,8 @@ const use = makeStyles((theme) => ({
     border: "1px solid",
     borderColor: "#c89666",
     textTransform: "none",
-    width: 50,
+    width: 20,
+    marginLeft: theme.spacing(3),
     "&:hover": {
       backgroundColor: "#c89666",
       borderColor: "#c89666",
@@ -99,7 +101,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'white'
   },
   secondary:{
-    color:'#c89666'
+    color:'#c89666',
+    marginLeft: theme.spacing(-1.5),
   },
   Arrow:{
     color:'white',
@@ -154,7 +157,9 @@ const AvailableRide = inject('users', 'rides')(observer((props) => {
                     secondary={dateFormat(ride.driver.departure_time,'mmm dd HH:MM')}
                   />
                   <ListItemSecondaryAction>
-                    <Button onClick={handleClick} className={classe.button}>join</Button>
+                    <Button onClick={handleClick} className={classe.button}>join </Button> 
+                    {/* driver: <Join name= {ride.driver.name} ride={ride.location.name+'-'+ride.destination.name} /> */}
+                     <Join name= {props.users.loggedInUser.name}  ride={ride.location.name+'-'+ride.destination.name} />
                   </ListItemSecondaryAction>
                 </ListItem>
          

@@ -201,13 +201,16 @@ const PassengerSearch = inject(
               color="primary"
             >
               Search
+              
             </Button>
+            
             </Grid>
           <Grid  item xs={12} className={classes.demo}>
           <List  dense={dense}>
       
         {relevantRides.map((r) => (
           <AvailableRide
+           name={r.driver.name}
             key={r.id}
             ride={r}
             textInput={textInput}

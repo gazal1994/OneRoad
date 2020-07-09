@@ -59,7 +59,7 @@ const ListOfRequestedRides = inject('users', 'rides')(observer((props) => {
             .filter(r => r.approvedPassengers.find(p => p.id == props.users.loggedInUser.id))
         setMyRequestedRides({ pending: PendingdRides, approved: approvedRides })
     }, [user])
-
+    console.log(myRequestedRides)
     return (
 <React.Fragment>
         <NavBar />
