@@ -15,6 +15,89 @@ import {
 import { formatRelative } from "date-fns";
 import "@reach/combobox/styles.css";
 import mapStyles from "./mapStyles";
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { Tooltip, Paper } from "@material-ui/core";
+import NavBar from '../Landing/NavBar'
+import Grid from "@material-ui/core/Grid";
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import PersonIcon from '@material-ui/icons/Person';
+const use = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+  button: {
+    backgroundColor: "#c89666",
+    color: "white",
+    border: "1px solid",
+    borderColor: "#c89666",
+    textTransform: "none",
+    width: 200,
+    "&:hover": {
+      backgroundColor: "#c89666",
+      borderColor: "#c89666",
+      boxShadow: "#c89666",
+    },
+    "&:active": {
+      boxShadow: "#c89666",
+      backgroundColor: "#c89666",
+      borderColor: "#c89666",
+    },
+    "&:focus": {
+      boxShadow: "#c89666",
+      borderColor: "#c89666",
+    },
+  },
+}));
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 350,
+    marginTop: theme.spacing(1),
+    direction: "column",
+    justify: "center",
+    alignItems: "center",
+    backgroundColor: "#12343b",
+    padding:20
+  },
+  div: {
+    flexGrow: 1,
+    marginTop: theme.spacing(10),
+  },
+  bullet: {
+    marginLeft: theme.spacing(-6),
+    color: "#c89666",
+  },
+  title: {
+    fontSize: 14,
+    marginLeft: theme.spacing(8),
+  },
+  pos: {
+    marginBottom: 12,
+  },
+  paper:{
+    backgroundColor: "#12343b",
+    margin: theme.spacing(1)
+   /*  width:300,
+    hight:300 */
+  
+  },
+  map:{
+
+  },
+
+  head:{
+    /* marginLeft: theme.spacing(6) */
+    color:'white',
+    marginLeft: theme.spacing(3)
+  }
+}));
 const libraries = ["places"];
 const mapContainerStyle = {
   height: "100vh",
@@ -32,6 +115,8 @@ if (navigator.geolocation) {
   });
 }
 const Map = inject('users', 'rides')(observer((props) => {
+  const classe =use()
+  const classes = useStyles();
   const rideId = props.match.params.rideId
   //let ride = null
   const [isRide, setIsRide] = useState(false)
@@ -115,15 +200,39 @@ const Map = inject('users', 'rides')(observer((props) => {
   console.log(ride);
 
   return (
+    <React.Fragment>
+       <NavBar />
     <div>
-      <h1>
-        OneRoad{" "}
-        <span role="img" aria-label="tent">
-          <img src="https://img.icons8.com/officel/40/000000/waypoint-map.png" />
-        </span>
-      </h1>
+    <Paper className={classes.paper}>
+    <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          alignItems="right"
+          spacing={0}
+        >
+       {ride ?
+       
+        <div /* className={classes.bullet} *//* style={{ color: 'white' }} */>
+           <h4 className={classes.head}>Rides Info</h4>
+          <p className={classes.bullet} >Price: {ride.distance / (ride.approvedPassengers.length + 1)}<AttachMoneyIcon /></p>
+          <p className={classes.bullet}>Distance:{ride.distance}KM</p>
+          <p className={classes.bullet}>Approved passengers:</p>
+          {ride.approvedPassengers.map(p => <p className={classes.bullet}><PersonIcon/>{p.name}</p>)}
+          {ride.driver.id == props.users.loggedInUser.id ?
+            ride.isDone ? <p>Ride Finished</p> :
+              <Button  variant="contained"
+              /* color="primary" */ className={classe.button} onClick={() => props.rides.finishRide(ride.id)}>Finish Ride</Button>
+            : null}
+        </div>
+        : null}
+      </Grid>
+      </Paper>
+       
+      
       {/* <Locate panTo={panTo} />
       <Search panTo={panTo} /> */}
+      <Paper className={classes.map}>
       <GoogleMap
         id="map"
         mapContainerStyle={mapContainerStyle}
@@ -171,18 +280,11 @@ const Map = inject('users', 'rides')(observer((props) => {
         ) : null}
       </GoogleMap>
 
-      {ride ?
-        <div style={{ color: 'white' }}>
-          <p >price: {ride.distance / (ride.approvedPassengers.length + 1)}</p>
-          <p>approved passengers:</p>
-          {ride.approvedPassengers.map(p => <p>{p.name}</p>)}
-          {ride.driver.id == props.users.loggedInUser.id ?
-            ride.isDone ? <p>Ride Finished</p> :
-              <button onClick={() => props.rides.finishRide(ride.id)}>Finish Ride</button>
-            : null}
-        </div>
-        : null}
-    </div>
+     
+      </Paper>
+   
+      </div>
+      </React.Fragment>
   );
 }))
 export default Map;

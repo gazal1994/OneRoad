@@ -15,6 +15,7 @@ import { Tooltip, Paper } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import MapIcon from '@material-ui/icons/Map';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import NavBar from '../Landing/NavBar'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 350,
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   div: {
     flexGrow: 1,
-    marginTop: theme.spacing(16),
+    marginTop: theme.spacing(10),
   },
   bullet: {
     marginLeft: theme.spacing(1),
@@ -68,7 +69,10 @@ const MyRides = inject(
       setMyRides(filteredRides);
     }, [user]);
     return (
+<React.Fragment>
+       <NavBar />
       <div className={classes.div}>
+        
         <Grid
           container
           direction="column"
@@ -90,7 +94,7 @@ const MyRides = inject(
               style={{ textDecoration: "none", color: "white" }}
               to='/MyRides'
             >
-            <h4 className={classes.head}>My Rides</h4>
+            <h4 className={classes.head}>My Carpools</h4>
             </Link>
             </Grid>
             <Grid item xs={6}>
@@ -157,6 +161,7 @@ const MyRides = inject(
           })}
         </Grid>
       </div>
+      </React.Fragment>
     );
   })
 );
