@@ -37,8 +37,9 @@ const Chat = ({ location }) => {
   useEffect(() => {
     socket.on('message', message => {
       setMessages(messages => [ ...messages, message ]);
+     
     });
-    
+     console.log(messages)
     socket.on("roomData", ({ users }) => {
       setUsers(users);
     });
@@ -51,7 +52,7 @@ const Chat = ({ location }) => {
       socket.emit('sendMessage', message, () => setMessage(''));
     }
   }
-
+   
   return (
     <div className="outerContainer">
       <div className="container">

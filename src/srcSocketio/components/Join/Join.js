@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { Link } from "react-router-dom";
-
+import ChatIcon from '@material-ui/icons/Chat';
 import './Join.css';
 
 export default function SignIn(props) {
@@ -14,12 +14,14 @@ export default function SignIn(props) {
   },[]);
   
   return (
-    <div className="joinOuterContainer">
-      <div className="joinInnerContainer">
+  /*   <div className="joinOuterContainer">
+      <div className="joinInnerContainer"> */
+      <React.Fragment>
         <Link onClick={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
-          <button className={'button mt-20'} type="submit">chat</button>
+          <ChatIcon fontSize='large' /* className={'button mt-20'} */ /* type="submit" */ />
         </Link>
-      </div>
-    </div>
+        </React.Fragment>
+   /*    </div>
+    </div> */
   );
 }

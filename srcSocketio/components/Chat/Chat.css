@@ -1,13 +1,15 @@
 .outerContainer {
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #1A1A1D;
+  
 }
 
 .container {
-  display: flex;
+ 
   flex-direction: column;
   justify-content: space-between;
   background: #FFFFFF;
@@ -19,6 +21,7 @@
 @media (min-width: 320px) and (max-width: 480px) {
   .outerContainer {
     height: 100%;
+   
   }
 
   .container {

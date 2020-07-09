@@ -33,7 +33,8 @@ const use = makeStyles((theme) => ({
     border: "1px solid",
     borderColor: "#c89666",
     textTransform: "none",
-    width: 50,
+    width: 20,
+    marginLeft: theme.spacing(3),
     "&:hover": {
       backgroundColor: "#c89666",
       borderColor: "#c89666",
@@ -100,7 +101,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'white'
   },
   secondary:{
-    color:'#c89666'
+    color:'#c89666',
+    marginLeft: theme.spacing(-1.5),
   },
   Arrow:{
     color:'white',
